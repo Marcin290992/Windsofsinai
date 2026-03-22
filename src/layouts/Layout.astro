@@ -20,6 +20,23 @@ const { title = 'Winds of Sinai' } = Astro.props;
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=IBM+Plex+Mono:wght@400&display=swap" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=IBM+Plex+Mono:wght@400&display=swap" />
 
+    <!-- Critical inline styles — render-blocking, prevents FOUC -->
+    <style is:inline>
+      html, body { margin: 0; background: #FAF8F3; }
+      #preloader {
+        position: fixed; inset: 0; z-index: 99999;
+        background: #FAF8F3;
+        display: flex; align-items: center; justify-content: center;
+      }
+      #preloader-text {
+        font-family: 'Cinzel Decorative', Georgia, serif;
+        font-size: clamp(2.25rem, 7.5vw, 6.75rem);
+        font-weight: 400; color: #0A0A0A;
+        letter-spacing: 0.08em; text-align: center;
+        opacity: 0;
+      }
+    </style>
+
 
     <!--
       Single inline script — runs in <head>, safe on Netlify.
