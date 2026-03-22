@@ -355,10 +355,13 @@ const year = new Date().getFullYear();
     };
   }
 
-  syncFooterSpacer();
-  setupFooterInteraction();
-  document.addEventListener('astro:page-load', () => {
+  if (document.readyState !== 'loading') {
     syncFooterSpacer();
     setupFooterInteraction();
-  });
+  } else {
+    document.addEventListener('DOMContentLoaded', () => {
+      syncFooterSpacer();
+      setupFooterInteraction();
+    }, { once: true });
+  }
 </script>

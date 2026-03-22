@@ -1,5 +1,6 @@
 ---
-// PageTransition.astro — rebuilt, stable strip transition
+// PageTransition.astro
+// Strip curtain page transition — always plays, including same-path navigation.
 ---
 
 <style is:global>
@@ -9,6 +10,7 @@
     z-index: 99990;
     pointer-events: none;
     overflow: hidden;
+    contain: strict;
   }
 
   .pt-strip {
@@ -21,30 +23,23 @@
     will-change: transform;
   }
 
-  /* Small overlap prevents subpixel seams on some displays. */
-  .pt-strip:nth-child(1) {
-    left: 0;
-    right: 66.2%;
-  }
+  .pt-strip:nth-child(1) { left: 0;     right: 66.2%; }
+  .pt-strip:nth-child(2) { left: 33.1%; right: 33.1%; }
+  .pt-strip:nth-child(3) { left: 66.2%; right: 0;     }
 
-  .pt-strip:nth-child(2) {
-    left: 33.1%;
-    right: 33.1%;
-  }
-
-  .pt-strip:nth-child(3) {
-    left: 66.2%;
-    right: 0;
-  }
-
+  /* Kill ALL browser View Transition animations — our overlay handles everything */
   ::view-transition-group(*),
-  ::view-transition-image-pair(*),
+  ::view-transition-image-pair(*) {
+    animation: none !important;
+    mix-blend-mode: normal !important;
+  }
   ::view-transition-old(*),
   ::view-transition-new(*) {
     animation: none !important;
-    opacity: 1 !important;
+    opacity: 0 !important;
     mix-blend-mode: normal !important;
   }
+
 </style>
 
 <div id="pt-overlay" aria-hidden="true" transition:persist>
@@ -53,267 +48,161 @@
   <div class="pt-strip"></div>
 </div>
 
+
 <script is:inline>
 (function () {
-  if (document.documentElement.dataset.ptBound) return;
-  document.documentElement.dataset.ptBound = '1';
+  if (window.__ptBound) return;
+  window.__ptBound = true;
 
-  var N_STRIPS = 3;
-  var COLOR = '#E8E0D0';
+  /* ── Timings ───────────────────────────────────────────────── */
+  var DESKTOP = { exitDur: 0.62, exitStagger: 0.10, hold: 70,  enterDur: 0.80, enterStagger: 0.10 };
+  var MOBILE  = { exitDur: 0.50, exitStagger: 0.08, hold: 40,  enterDur: 0.64, enterStagger: 0.08 };
+  var N       = 3;
+  var COLOR   = '#E8E0D0';
+  var RM_IN   = 140;
+  var RM_OUT  = 0.24;
 
-  var DESKTOP_EXIT_DUR = 0.62;
-  var DESKTOP_EXIT_STAGGER = 0.10;
-  var DESKTOP_HOLD = 70;
-  var DESKTOP_ENTER_DUR = 0.8;
-  var DESKTOP_ENTER_STAGGER = 0.1;
+  /* ── Helpers ───────────────────────────────────────────────── */
+  function mob() { return !!window.matchMedia?.('(max-width:900px)').matches; }
+  function rm()  { return !!window.matchMedia?.('(prefers-reduced-motion:reduce)').matches; }
+  function tim() { return mob() ? MOBILE : DESKTOP; }
+  function g()   { return window.gsap; }
+  function ov()  { return document.getElementById('pt-overlay'); }
+  function ss()  { return document.querySelectorAll('.pt-strip'); }
 
-  var MOBILE_EXIT_DUR = 0.5;
-  var MOBILE_EXIT_STAGGER = 0.08;
-  var MOBILE_HOLD = 40;
-  var MOBILE_ENTER_DUR = 0.64;
-  var MOBILE_ENTER_STAGGER = 0.08;
-
-  var RM_FADE_IN_MS = 140;
-  var RM_FADE_OUT_S = 0.24;
-
-  function isMobile() {
-    return !!(window.matchMedia && window.matchMedia('(max-width: 900px)').matches);
+  function totalExitMs(t) {
+    if (rm()) return RM_IN + 40;
+    return Math.round((t.exitDur + t.exitStagger * (N - 1)) * 1000) + t.hold;
   }
 
-  function reduceMotion() {
-    return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-  }
-
-  function timings() {
-    if (isMobile()) {
-      return {
-        exitDur: MOBILE_EXIT_DUR,
-        exitStagger: MOBILE_EXIT_STAGGER,
-        hold: MOBILE_HOLD,
-        enterDur: MOBILE_ENTER_DUR,
-        enterStagger: MOBILE_ENTER_STAGGER,
-      };
-    }
-    return {
-      exitDur: DESKTOP_EXIT_DUR,
-      exitStagger: DESKTOP_EXIT_STAGGER,
-      hold: DESKTOP_HOLD,
-      enterDur: DESKTOP_ENTER_DUR,
-      enterStagger: DESKTOP_ENTER_STAGGER,
-    };
-  }
-
-  function exitTotalMs(t) {
-    if (reduceMotion()) return RM_FADE_IN_MS + 40;
-    return Math.round((t.exitDur + t.exitStagger * (N_STRIPS - 1)) * 1000) + t.hold;
-  }
-
-  function ov() { return document.getElementById('pt-overlay'); }
-  function sel() { return document.querySelectorAll('.pt-strip'); }
-  function gsapOk() { return !!window.gsap; }
-
-  function parseUrl(href) {
-    try { return new URL(href, window.location.href); }
-    catch (_) { return null; }
-  }
-
-  function shouldSkipTransition(href) {
-    if (!href) return false;
-    var u = parseUrl(href);
-    if (!u) return false;
-    if (u.origin !== window.location.origin) return false;
-
-    var samePath = u.pathname === window.location.pathname && u.search === window.location.search;
-    var hashOnly = samePath && !!u.hash && u.hash !== window.location.hash;
-    var sameExact = samePath && u.hash === window.location.hash;
-
-    return hashOnly || sameExact;
-  }
-
-  if (!document.documentElement.dataset.ptClickBound) {
-    document.documentElement.dataset.ptClickBound = '1';
-    document.addEventListener('click', function (ev) {
-      var t = ev.target;
-      var a = t && t.closest ? t.closest('a[href]') : null;
-      window.__ptLastHref = a ? (a.getAttribute('href') || a.href || '') : '';
-    }, true);
-  }
-
-  function setStripColor() {
-    var ss = sel();
-    for (var i = 0; i < ss.length; i++) {
-      ss[i].style.background = COLOR;
-    }
-  }
+  /* ── Strip state ───────────────────────────────────────────── */
+  function paint() { ss().forEach(function(s){ s.style.background = COLOR; }); }
 
   function coverNow() {
-    var ss = sel();
-    for (var i = 0; i < ss.length; i++) {
-      ss[i].style.transform = 'scaleY(1)';
-      ss[i].style.transformOrigin = 'bottom center';
-    }
-    var o = ov();
-    if (o) {
-      o.style.pointerEvents = 'all';
-      o.style.opacity = '1';
-    }
+    ss().forEach(function(s){
+      s.style.transform = 'scaleY(1)';
+      s.style.transformOrigin = 'bottom center';
+    });
+    var o = ov(); if (o) { o.style.pointerEvents = 'all'; o.style.opacity = '1'; }
   }
 
   function resetNow() {
-    var ss = sel();
-    for (var i = 0; i < ss.length; i++) {
-      ss[i].style.transform = 'scaleY(0)';
-      ss[i].style.transformOrigin = 'bottom center';
-    }
-    var o = ov();
-    if (o) {
-      o.style.pointerEvents = 'none';
-      o.style.opacity = '1';
-      o.style.transition = '';
-    }
+    ss().forEach(function(s){
+      s.style.transform = 'scaleY(0)';
+      s.style.transformOrigin = 'bottom center';
+    });
+    var o = ov(); if (o) { o.style.pointerEvents = 'none'; o.style.opacity = '1'; o.style.transition = ''; }
   }
 
-  document.addEventListener('astro:before-preparation', function (e) {
-    var t = timings();
-    window.__ptTimings = t;
-    window.__ptSkip = shouldSkipTransition(window.__ptLastHref || '');
-
-    if (window.__ptSkip) {
-      window.__ptDirection = undefined;
-      return;
-    }
-
-    window.__ptDirection = e.direction || 'forward';
+  /* ══════════════════════════════════════════════════════════
+     before-preparation
+  ══════════════════════════════════════════════════════════ */
+  document.addEventListener('astro:before-preparation', function(e) {
+    var t           = tim();
+    window.__ptTim  = t;
+    window.__ptDir  = e.direction || 'forward';
 
     var sw = document.getElementById('scroll-wrapper');
     if (sw) sw.style.overflow = 'hidden';
     if (window.lenis) window.lenis.stop();
 
-    setStripColor();
+    paint();
 
-    if (reduceMotion()) {
+    if (rm()) {
       coverNow();
-      var o1 = ov();
-      if (o1) {
-        o1.style.opacity = '0';
-        o1.style.transition = 'opacity ' + RM_FADE_IN_MS + 'ms ease';
-        requestAnimationFrame(function () { o1.style.opacity = '1'; });
-      }
-    } else if (gsapOk()) {
-      window.gsap.killTweensOf('.pt-strip');
-      window.gsap.set('.pt-strip', { scaleY: 0, transformOrigin: 'bottom center' });
-      window.gsap.to('.pt-strip', {
-        scaleY: 1,
-        duration: t.exitDur,
-        ease: 'sine.inOut',
-        stagger: t.exitStagger,
-      });
-      var o2 = ov();
-      if (o2) o2.style.pointerEvents = 'all';
+      var o = ov();
+      if (o) { o.style.opacity = '0'; o.style.transition = 'opacity ' + RM_IN + 'ms ease'; requestAnimationFrame(function(){ o.style.opacity = '1'; }); }
+    } else if (g()) {
+      g().killTweensOf('.pt-strip');
+      g().set('.pt-strip', { scaleY: 0, transformOrigin: 'bottom center' });
+      g().to('.pt-strip', { scaleY: 1, duration: t.exitDur, ease: 'sine.inOut', stagger: t.exitStagger });
+      ov().style.pointerEvents = 'all';
     } else {
       coverNow();
     }
 
     if (typeof e.loader === 'function') {
-      var origLoader = e.loader;
-      e.loader = function () {
-        return new Promise(function (done) {
-          var ready = new Promise(function (r) { setTimeout(r, exitTotalMs(t)); });
-          Promise.all([origLoader(), ready]).then(done);
-        });
+      var orig = e.loader;
+      e.loader = function() {
+        return Promise.all([orig(), new Promise(function(r){ setTimeout(r, totalExitMs(t)); })]);
       };
     }
   });
 
-  document.addEventListener('astro:before-swap', function () {
-    if (window.__ptSkip) return;
-
-    if (reduceMotion()) {
-      coverNow();
-      return;
+  /* ══════════════════════════════════════════════════════════
+     before-swap — skip browser snapshot entirely
+  ══════════════════════════════════════════════════════════ */
+  document.addEventListener('astro:before-swap', function(e) {
+    if (e.viewTransition) {
+      try { e.viewTransition.skipTransition(); } catch(_) {}
+      if (e.viewTransition.ready) e.viewTransition.ready.catch(function(){});
+      if (e.viewTransition.finished) e.viewTransition.finished.catch(function(){});
     }
 
-    if (gsapOk()) {
-      window.gsap.killTweensOf('.pt-strip');
-      window.gsap.set('.pt-strip', { scaleY: 1, transformOrigin: 'bottom center' });
-      var o = ov();
-      if (o) o.style.pointerEvents = 'all';
+    if (rm()) { coverNow(); return; }
+
+    if (g()) {
+      g().killTweensOf('.pt-strip');
+      g().set('.pt-strip', { scaleY: 1, transformOrigin: 'bottom center' });
+      ov().style.pointerEvents = 'all';
       return;
     }
 
     coverNow();
   });
 
-  document.addEventListener('astro:after-swap', function () {
-    if (window.__ptSkip) {
-      window.__ptSkip = false;
-      window.__ptDirection = undefined;
-      return;
-    }
+  /* ══════════════════════════════════════════════════════════
+     after-swap — restore scroll, animate strips/fade UP
+  ══════════════════════════════════════════════════════════ */
+  document.addEventListener('astro:after-swap', function() {
+    var t      = window.__ptTim || tim();
+    var isBack = window.__ptDir === 'back';
+    window.__ptDir  = undefined;
 
-    var t = window.__ptTimings || timings();
-    var isBack = window.__ptDirection === 'back';
-    window.__ptDirection = undefined;
-
+    /* Restore scroll */
     var sw = document.getElementById('scroll-wrapper');
     if (sw) {
       if (!isBack) sw.scrollTop = 0;
       sw.style.overflow = '';
     }
-
     if (window.lenis) {
       if (!isBack) window.lenis.scrollTo(0, { immediate: true });
       window.lenis.start();
     }
 
+    /* Close menu */
     var mo = document.getElementById('menuOverlay');
-    if (mo) {
-      mo.classList.remove('is-open');
-      mo.getAnimations().forEach(function (a) { a.cancel(); });
-    }
-
+    if (mo) { mo.classList.remove('is-open'); mo.getAnimations().forEach(function(a){ a.cancel(); }); }
     var mt = document.getElementById('menuTrigger');
-    if (mt) {
-      mt.classList.remove('is-active');
-      mt.setAttribute('aria-expanded', 'false');
-    }
-
+    if (mt) { mt.classList.remove('is-active'); mt.setAttribute('aria-expanded','false'); }
     var ft = document.getElementById('floatingTrigger');
-    if (ft) ft.classList.remove('is-active', 'menu-open');
-
+    if (ft) ft.classList.remove('is-active','menu-open');
     document.body.classList.remove('menu-is-open');
 
-    if (reduceMotion()) {
-      var o0 = ov();
-      if (o0) {
-        o0.style.pointerEvents = 'all';
-        o0.style.transition = 'opacity ' + RM_FADE_OUT_S + 's ease';
-        o0.style.opacity = '0';
-      }
-      setTimeout(function () {
-        resetNow();
-      }, Math.round(RM_FADE_OUT_S * 1000));
+    /* ── Strips up ── */
+    if (rm()) {
+      var o = ov();
+      if (o) { o.style.pointerEvents = 'all'; o.style.transition = 'opacity ' + RM_OUT + 's ease'; o.style.opacity = '0'; }
+      setTimeout(resetNow, Math.round(RM_OUT * 1000));
       return;
     }
 
-    if (gsapOk()) {
-      window.gsap.killTweensOf('.pt-strip');
-      window.gsap.set('.pt-strip', { scaleY: 1, transformOrigin: 'top center' });
-      var o1 = ov();
-      if (o1) o1.style.pointerEvents = 'all';
-      window.gsap.to('.pt-strip', {
+    if (g()) {
+      g().killTweensOf('.pt-strip');
+      g().set('.pt-strip', { scaleY: 1, transformOrigin: 'top center' });
+      ov().style.pointerEvents = 'all';
+      g().to('.pt-strip', {
         scaleY: 0,
         duration: t.enterDur,
         ease: 'sine.inOut',
         stagger: { each: t.enterStagger, from: 'end' },
-        onComplete: function () {
-          resetNow();
-        },
+        onComplete: resetNow,
       });
       return;
     }
 
     resetNow();
   });
+
 })();
 </script>

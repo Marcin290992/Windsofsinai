@@ -763,17 +763,8 @@ import ctaBg from '../img/beduin-tent-scaled.webp';
       _raf = requestAnimationFrame(function() { init(); _raf = null; });
     }
 
-    document.addEventListener('astro:page-load',  schedule);
     document.addEventListener('DOMContentLoaded', schedule);
     if (document.readyState !== 'loading') schedule();
-
-    document.addEventListener('astro:before-swap', function() {
-      if (_raf) { cancelAnimationFrame(_raf); _raf = null; }
-      if (_pxClean) { _pxClean(); _pxClean = null; }
-      if (_dkClean) { _dkClean(); _dkClean = null; }
-      var ST = window.ScrollTrigger;
-      if (ST) ST.getAll().forEach(function(t) { t.kill(); });
-    });
 
   })();
   </script>

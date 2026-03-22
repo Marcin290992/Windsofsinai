@@ -1251,7 +1251,7 @@
         isAnimating = false;
       }
 
-      // Expose globally so PageTransition can await menu close
+      // Expose globally for external close
       window.__closeMenuOverlay = async function () {
         if (isOpen) await close();
       };
@@ -1285,7 +1285,7 @@
           const isMobileTapDelay = window.innerWidth <= 900;
 
           if (isMobileTapDelay) {
-            // Mobile: show tap highlight, then navigate (no menu close)
+            // Mobile: show tap highlight, then navigate with page-cover fade
             event.preventDefault();
             event.stopPropagation();
             if (tapNavigationLocked) return;
@@ -1293,19 +1293,27 @@
             link.classList.add('is-tapped');
 
             const href = link.getAttribute('href');
-            setTimeout(async () => {
+            setTimeout(() => {
               link.classList.remove('is-tapped');
               tapNavigationLocked = false;
               if (href) {
-                const { navigate } = await import('astro:transitions/client');
-                navigate(href);
+                const cover = document.getElementById('page-cover');
+                if (cover) {
+                  cover.classList.remove('is-hidden');
+                  cover.classList.add('is-visible');
+                  cover.addEventListener('transitionend', () => {
+                    window.location.href = href;
+                  }, { once: true });
+                  setTimeout(() => { window.location.href = href; }, 400);
+                } else {
+                  window.location.href = href;
+                }
               }
             }, 300);
             return;
           }
 
           // Desktop: Astro navigates naturally.
-          // PageTransition fades to black over the open menu.
         });
       });
 
@@ -1334,8 +1342,6 @@
       teardown();
       teardown = setupNavigation();
     }
-
-    document.addEventListener('astro:page-load', init);
 
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', init, { once: true });

@@ -99,10 +99,15 @@ function enforceHiddenScrollbar() {
 
 function runPreloader() {
   const overlay = document.getElementById('preloader');
+  const cover   = document.getElementById('page-cover');
 
-  // Only once per browser session — skip on Astro SPA navigations
+  // Non-first visit: skip preloader text, just fade cover out
   if (sessionStorage.getItem('pl-shown')) {
     if (overlay) { overlay.style.display = 'none'; }
+    // Fade out the page cover
+    requestAnimationFrame(() => {
+      if (cover) cover.classList.add('is-hidden');
+    });
     return;
   }
   sessionStorage.setItem('pl-shown', '1');
@@ -120,6 +125,8 @@ function runPreloader() {
     .call(() => {
       overlay.style.display = 'none';
       document.body.style.overflow = '';
+      // Fade out the page cover after preloader
+      if (cover) cover.classList.add('is-hidden');
       lenis?.start();
     });
 }
@@ -141,22 +148,8 @@ function handlePageLoad() {
   initPage();
 }
 
-// ── Cleanup BEFORE Astro swaps the DOM ──
-document.addEventListener('astro:before-swap', () => {
-  destroyLenis();
-  ScrollTrigger.getAll().forEach((st) => st.kill());
-  ScrollTrigger.clearScrollMemory();
-  // Clear GSAP inline styles on dest-img-wrap before snapshot
-  document.querySelectorAll('.dest-img-wrap').forEach((el) => {
-    el.style.transform = '';
-    el.style.willChange = '';
-  });
-});
-
-document.addEventListener('astro:page-load', handlePageLoad);
-document.addEventListener('astro:after-swap', () => {
-  requestAnimationFrame(enforceHiddenScrollbar);
-});
+// ── Init on DOMContentLoaded / load ──
+document.addEventListener('DOMContentLoaded', handlePageLoad);
 
 // bfcache (mobile back/forward cache)
 window.addEventListener('pageshow', (e) => {
@@ -166,8 +159,42 @@ window.addEventListener('pageshow', (e) => {
   }
 });
 
-// Safety net for hard refresh — astro:page-load may have fired before our listener was added
+// Safety net for hard refresh
 if (document.readyState === 'complete') {
   requestAnimationFrame(() => requestAnimationFrame(handlePageLoad));
 }
+
+// ── MPA link-click transition ──
+// Fade page-cover IN, then let browser navigate
+document.addEventListener('click', (e) => {
+  const anchor = e.target.closest('a[href]');
+  if (!anchor) return;
+
+  const href = anchor.getAttribute('href');
+  // Skip external links, anchors, javascript:, new-tab
+  if (!href || href.startsWith('#') || href.startsWith('javascript:') ||
+      anchor.target === '_blank' || anchor.hasAttribute('download') ||
+      e.ctrlKey || e.metaKey || e.shiftKey) return;
+
+  // Skip non-local links
+  try {
+    const url = new URL(href, location.origin);
+    if (url.origin !== location.origin) return;
+  } catch { return; }
+
+  e.preventDefault();
+  const cover = document.getElementById('page-cover');
+  if (cover) {
+    cover.classList.remove('is-hidden');
+    cover.classList.add('is-visible');
+    // Navigate after fade completes
+    cover.addEventListener('transitionend', () => {
+      window.location.href = href;
+    }, { once: true });
+    // Fallback if transitionend doesn't fire
+    setTimeout(() => { window.location.href = href; }, 400);
+  } else {
+    window.location.href = href;
+  }
+});
 

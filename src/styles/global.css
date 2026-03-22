@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+/* ── MPA Page Transition Cover ────────────────────────────────────── */
+#page-cover {
+  position: fixed;
+  inset: 0;
+  z-index: 99998;
+  background: #FAF8F3;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.35s ease;
+}
+#page-cover.is-visible { opacity: 1; pointer-events: all; }
+#page-cover.is-hidden  { opacity: 0; }
+
 /* ── Preloader ───────────────────────────────────────────────────── */
 #preloader {
   position: fixed;
@@ -258,4 +271,5 @@ html.pkg-scroll-locked #scroll-wrapper {
 		max-height: 90vh; overflow-y: auto;
 	}
 }
+
 
