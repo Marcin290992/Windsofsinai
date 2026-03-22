@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import PageTransition from '../components/PageTransition.astro';
 import Navigation from '../components/Navigation.astro';
 import EnquiryModal from '../components/EnquiryModal.astro';
 import Footer from '../components/Footer.astro';
@@ -64,6 +65,8 @@ const { title = 'Winds of Sinai' } = Astro.props;
   </head>
 
   <body class="bg-[#FAF8F3] text-zinc-900 antialiased">
+
+    <PageTransition />
 
     <!-- Liquid Glass SVG filter (referenced by [data-liquid-glass] elements) -->
     <svg class="liquid-glass-defs" aria-hidden="true">
