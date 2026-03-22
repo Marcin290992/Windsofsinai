@@ -362,11 +362,8 @@ import ctaBg from '../img/beduin-tent-scaled.webp';
       });
     }
 
-    if (document.readyState !== 'loading') {
-      initManifesto();
-    } else {
-      document.addEventListener('DOMContentLoaded', initManifesto, { once: true });
-    }
+    document.addEventListener('astro:page-load', initManifesto);
+    if (document.readyState !== 'loading') initManifesto();
   </script>
 
 

@@ -643,11 +643,13 @@ const packages = [
     };
   }
 
+  document.addEventListener('astro:before-preparation', () => pkgCtx?.revert());
+
+  document.addEventListener('astro:page-load', () => {
+    if (document.querySelector('[data-pkg-wrap]')) initPackages();
+  });
+
   if (document.readyState !== 'loading') {
     if (document.querySelector('[data-pkg-wrap]')) initPackages();
-  } else {
-    document.addEventListener('DOMContentLoaded', () => {
-      if (document.querySelector('[data-pkg-wrap]')) initPackages();
-    }, { once: true });
   }
 </script>

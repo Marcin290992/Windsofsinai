@@ -483,6 +483,15 @@ const destinations = [
   }
 
   // ── Lifecycle ──────────────────────────────────────────────────
+  document.addEventListener('astro:before-preparation', cleanup);
+
+  document.addEventListener('astro:page-load', () => {
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+      init();
+    });
+  });
+
   if (document.readyState !== 'loading') {
     requestAnimationFrame(() => {
       ScrollTrigger.refresh();

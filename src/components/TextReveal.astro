@@ -102,9 +102,6 @@ const { lines, label } = Astro.props;
     });
   }
 
-  if (document.readyState !== 'loading') {
-    initReveal();
-  } else {
-    document.addEventListener('DOMContentLoaded', initReveal, { once: true });
-  }
+  document.addEventListener('astro:page-load', initReveal);
+  if (document.readyState !== 'loading') initReveal();
 </script>

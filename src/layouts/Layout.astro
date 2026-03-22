@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import Navigation from '../components/Navigation.astro';
 import EnquiryModal from '../components/EnquiryModal.astro';
 import Footer from '../components/Footer.astro';
@@ -42,12 +43,10 @@ const { title = 'Winds of Sinai' } = Astro.props;
         window.addEventListener('resize', setVh);
       })();
     </script>
+    <ClientRouter />
   </head>
 
   <body class="bg-[#FAF8F3] text-zinc-900 antialiased">
-
-    <!-- Page transition cover — starts opaque, fades out once CSS+DOM ready -->
-    <div id="page-cover" aria-hidden="true"></div>
 
     <!-- Liquid Glass SVG filter (referenced by [data-liquid-glass] elements) -->
     <svg class="liquid-glass-defs" aria-hidden="true">
@@ -127,11 +126,8 @@ const { title = 'Winds of Sinai' } = Astro.props;
         }, true);
       }
 
-      if (document.readyState !== 'loading') {
-        initLiquidGlass();
-      } else {
-        document.addEventListener('DOMContentLoaded', initLiquidGlass, { once: true });
-      }
+      document.addEventListener('astro:page-load', initLiquidGlass);
+      if (document.readyState !== 'loading') initLiquidGlass();
     </script>
 
   </body>

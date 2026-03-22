@@ -588,13 +588,23 @@ const panels = [
     ScrollTrigger.refresh();
   }
 
+  document.addEventListener('astro:before-preparation', () => {
+    const sw = document.getElementById('scroll-wrapper');
+    if (sw && hzCtx && window.__hzScrollTop === undefined) {
+      window.__hzScrollTop = sw.scrollTop;
+    }
+    cleanupHz();
+  });
+
+  document.addEventListener('astro:page-load', () => {
+    if (!document.querySelector('[data-hz-section]')) {
+      cleanupHz();
+      return;
+    }
+    requestAnimationFrame(() => initHorizontalScroll());
+  });
+
   if (document.readyState !== 'loading') {
     if (document.querySelector('[data-hz-section]')) initHorizontalScroll();
-  } else {
-    document.addEventListener('DOMContentLoaded', () => {
-      if (document.querySelector('[data-hz-section]')) {
-        requestAnimationFrame(() => initHorizontalScroll());
-      }
-    }, { once: true });
   }
 </script>

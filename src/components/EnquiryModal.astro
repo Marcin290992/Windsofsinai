@@ -135,6 +135,7 @@
     }
 
     function enqInit() { initEnquiryModal(); }
+    document.addEventListener('astro:page-load', enqInit);
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', enqInit, { once: true });
     } else {
