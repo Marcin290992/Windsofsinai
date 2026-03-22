@@ -1,0 +1,778 @@
+---
+import Destinations from '../components/Destinations.astro';
+import HorizontalScroll from '../components/HorizontalScroll.astro';
+import Layout from '../layouts/Layout.astro';
+// @ts-ignore
+import heroVideo from '../video/hero_section_video.webm';
+// @ts-ignore
+import heroPoster from '../video/hero_poster.svg?url';
+// @ts-ignore
+import ctaBg from '../img/beduin-tent-scaled.webp';
+---
+
+<Layout title="Winds of Sinai">
+  <main class="relative overflow-hidden">
+    <!-- Instant dark bg shown until video loads -->
+    <div
+      id="video-placeholder"
+      class="absolute inset-0 z-1"
+      style="background: linear-gradient(to bottom, #090909 0%, #121212 48%, #050505 100%); transition: opacity 0.6s ease;"
+      aria-hidden="true"
+    ></div>
+
+    <video
+      class="absolute inset-0 h-full w-full object-cover object-center"
+      style="display:block"
+      src={heroVideo}
+      poster={heroPoster}
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      aria-hidden="true"
+      oncanplay="document.getElementById('video-placeholder').style.opacity='0'"
+    ></video>
+    <script is:inline>
+      if (window.innerWidth <= 900) {
+        const video = document.querySelector('main video');
+        if (video) {
+          video.preload = 'none';
+          video.load();
+        }
+      }
+    </script>
+
+    <div class="absolute inset-0 bg-linear-to-b from-black/48 via-black/32 to-black/66" aria-hidden="true"></div>
+
+    <section class="hero-shell relative z-10 flex h-full items-center justify-center px-4 text-center text-white">
+      <div class="hero-lockup">
+        <h1 class="hero-title">
+          <span class="hero-title-main">Sztuka podróżowania</span>
+          <span class="hero-title-accent">dla tych,<br />którzy cenią wyjątkowość</span>
+        </h1>
+        <p class="hero-subtitle">Prywatny Synaj w najbardziej wyrafinowanym wydaniu.</p>
+      </div>
+    </section>
+  </main>
+
+  <section id="section-two" class="manifesto-editorial">
+
+    <!-- Row 1: text left, image right -->
+    <article class="manifesto-row" data-manifesto-row>
+      <div class="manifesto-row__text" data-reveal="text">
+        <span class="manifesto-row__label">Manifesto</span>
+        <div class="reveal-block" data-astro-reveal>
+          <div class="reveal-line"><span>We craft identities</span></div>
+          <div class="reveal-line"><span>that <em style="color:var(--c-gold)">outlive</em> trends</span></div>
+          <div class="reveal-line"><span>and shape culture.</span></div>
+        </div>
+      </div>
+      <div class="manifesto-row__image" data-reveal="image">
+        <div class="manifesto-row__image-inner">
+          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80" alt="Cinematic still" loading="lazy" decoding="async" />
+        </div>
+      </div>
+    </article>
+
+    <!-- Row 2: image left, text right -->
+    <article class="manifesto-row manifesto-row--reversed" data-manifesto-row>
+      <div class="manifesto-row__image" data-reveal="image">
+        <div class="manifesto-row__image-inner">
+          <img src="https://images.unsplash.com/photo-1682687221038-404cb8830901?auto=format&fit=crop&w=1200&q=80" alt="Desert light" loading="lazy" decoding="async" />
+        </div>
+      </div>
+      <div class="manifesto-row__text" data-reveal="text">
+        <span class="manifesto-row__label">Vision</span>
+        <div class="reveal-block" data-astro-reveal>
+          <div class="reveal-line"><span>Every frame,</span></div>
+          <div class="reveal-line"><span>every word,</span></div>
+          <div class="reveal-line"><span>every silence —</span></div>
+          <div class="reveal-line"><span>intentional.</span></div>
+        </div>
+      </div>
+    </article>
+
+  </section>
+
+  <Destinations />
+
+  <HorizontalScroll />
+
+  <section class="why-section">
+    <div class="why-section__header">
+      <p class="why-section__label">Dlaczego my</p>
+      <h2 class="why-section__title">
+        <span class="why-h-line"><span class="why-h-inner">Podróże</span></span>
+        <span class="why-h-line"><span class="why-h-inner">szyte na miarę</span></span>
+      </h2>
+      <p class="why-section__intro">
+        Każda wyprawa z Winds of Sinai to autorski projekt — dopasowany do Ciebie, nie do katalogu.
+        Znamy Synaj jak własną kieszeń: od rafy w Dahabie po wschód słońca na szczycie Mojżesza.
+      </p>
+    </div>
+
+    <div class="why-section__grid">
+      <div class="why-card">
+        <span class="why-card__index">01</span>
+        <h3 class="why-card__title">Lokalna wiedza</h3>
+        <p class="why-card__body">
+          Nasi przewodnicy to Beduini urodzeni na Synaju. Znają każdą dolinę, 
+          każdy szlak i każde ukryte miejsce, które nie istnieje na żadnej mapie.
+        </p>
+      </div>
+
+      <div class="why-card">
+        <span class="why-card__index">02</span>
+        <h3 class="why-card__title">Bezpieczeństwo</h3>
+        <p class="why-card__body">
+          Certyfikowani instruktorzy nurkowania, sprawdzony sprzęt i wieloletnie 
+          doświadczenie w organizacji wypraw w terenie pustynnym gwarantują Twój spokój.
+        </p>
+      </div>
+
+      <div class="why-card">
+        <span class="why-card__index">03</span>
+        <h3 class="why-card__title">Autentyczność</h3>
+        <p class="why-card__body">
+          Żadnych sztucznych atrakcji. Kolacja pod gwiazdami z beduińską muzyką, 
+          herbata na pustyni o wschodzie słońca — to prawdziwy Synaj.
+        </p>
+      </div>
+
+      <div class="why-card">
+        <span class="why-card__index">04</span>
+        <h3 class="why-card__title">Elastyczność</h3>
+        <p class="why-card__body">
+          Solo, z partnerem czy w grupie — każdy plan tworzymy od zera. 
+          Chcesz dodać dzień nurkowania albo nocleg w oazie? Żaden problem.
+        </p>
+      </div>
+
+      <div class="why-card">
+        <span class="why-card__index">05</span>
+        <h3 class="why-card__title">Pełna obsługa</h3>
+        <p class="why-card__body">
+          Od transferu z lotniska po ostatni posiłek — zajmujemy się wszystkim. 
+          Ty skupiasz się tylko na przeżywaniu chwili.
+        </p>
+      </div>
+
+      <div class="why-card">
+        <span class="why-card__index">06</span>
+        <h3 class="why-card__title">Odpowiedzialność</h3>
+        <p class="why-card__body">
+          Wspieramy lokalne społeczności i dbamy o ekosystem rafy. 
+          Każda wyprawa to krok w stronę zrównoważonej turystyki.
+        </p>
+      </div>
+    </div>
+
+    <div class="why-section__footer">
+      <p class="why-section__footer-text">
+        Ponad 500 podróżników zaufało nam w ciągu ostatnich 5 lat.<br>
+        Dołącz do nich i odkryj Synaj, jakiego jeszcze nie znasz.
+      </p>
+      <a href="/kontakt" class="why-section__cta">
+        Zaplanuj swoją wyprawę <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- CTA Banner — last section before footer reveal -->
+  <section class="cta-banner">
+    <img
+      class="cta-banner__bg"
+      src={ctaBg.src}
+      alt=""
+      loading="lazy"
+      decoding="async"
+      aria-hidden="true"
+    />
+    <div class="cta-banner__overlay" aria-hidden="true"></div>
+    <div class="cta-banner__content">
+      <span class="cta-banner__label">Twoja przygoda</span>
+      <h2 class="cta-banner__title">
+        <span class="cta-banner__line">Zaplanuj swoją</span>
+        <span class="cta-banner__line">wyprawę na <em>Synaj</em></span>
+      </h2>
+      <p class="cta-banner__desc">
+        Kolacja pod gwiazdami, nurkowanie w Dahabie, wschód słońca na szczycie Mojżesza — to dopiero początek.
+      </p>
+      <a href="/kontakt" class="cta-banner__btn">
+        Napisz do nas <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </section>
+
+  <style>
+    .cta-banner {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .cta-banner__bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .cta-banner__overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(9,9,9,0.35) 0%,
+        rgba(9,9,9,0.55) 50%,
+        rgba(9,9,9,0.7) 100%
+      );
+    }
+
+    .cta-banner__content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      color: #fff;
+      padding: clamp(3rem, 6vw, 6rem) clamp(1.5rem, 4vw, 3rem);
+      max-width: 48rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .cta-banner__label {
+      font-family: var(--f-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--c-gold, #C8A96E);
+    }
+
+    .cta-banner__title {
+      font-family: 'Cinzel Decorative', Georgia, serif;
+      font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: 0.02em;
+      margin: 0;
+    }
+
+    .cta-banner__title em {
+      color: var(--c-gold, #C8A96E);
+      font-style: italic;
+    }
+
+    .cta-banner__line {
+      display: block;
+    }
+
+    .cta-banner__desc {
+      font-family: var(--f-sans, Georgia, serif);
+      font-size: clamp(0.9rem, 1.3vw, 1.1rem);
+      line-height: 1.75;
+      color: rgba(255,255,255,0.75);
+      max-width: 34rem;
+      margin: 0;
+    }
+
+    .cta-banner__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--f-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #fff;
+      padding: 0.9rem 2.2rem;
+      margin-top: 0.5rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 2px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: background 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+    }
+
+    .cta-banner__btn:hover {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(200, 169, 110, 0.5);
+      color: var(--c-gold, #C8A96E);
+    }
+
+    @media (max-width: 560px) {
+      .cta-banner {
+        min-height: 80vh;
+      }
+    }
+  </style>
+
+  <style>
+    .why-section {
+      background: #FAF8F3;
+      padding: clamp(6rem, 12vw, 12rem) clamp(2rem, 6vw, 6.5rem);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: clamp(4rem, 8vw, 7rem);
+    }
+
+    .why-section__header {
+      max-width: 52rem;
+    }
+
+    .why-section__label {
+      font-family: var(--f-mono);
+      font-size: 0.55rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--c-gold-dim, #a48a5a);
+      margin: 0 0 1.5rem;
+    }
+
+    .why-section__title {
+      font-family: 'Cinzel Decorative', Georgia, serif;
+      font-size: clamp(2.4rem, 5.5vw, 5rem);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: 0.02em;
+      color: #111;
+      margin: 0 0 2.5rem;
+    }
+
+    .why-h-line  { display: block; overflow: hidden; }
+    .why-h-inner { display: block; }
+
+    .why-section__intro {
+      font-family: var(--f-sans, Georgia, serif);
+      font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+      line-height: 1.75;
+      color: #444;
+      max-width: 38rem;
+      margin: 0;
+    }
+
+    .why-section__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(2rem, 4vw, 3.5rem);
+      width: 100%;
+    }
+
+    .why-card {
+      padding: clamp(1.5rem, 3vw, 2.5rem) 0;
+      border-top: 1px solid var(--c-gold, #C8A96E);
+    }
+
+    .why-card__index {
+      font-family: var(--f-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--c-gold-dim, #a48a5a);
+      display: block;
+      margin-bottom: 1.2rem;
+    }
+
+    .why-card__title {
+      font-family: 'Cinzel Decorative', Georgia, serif;
+      font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+      font-weight: 400;
+      line-height: 1.2;
+      color: #111;
+      margin: 0 0 1rem;
+    }
+
+    .why-card__body {
+      font-family: var(--f-sans, Georgia, serif);
+      font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+      line-height: 1.7;
+      color: #555;
+      margin: 0;
+    }
+
+    .why-section__footer {
+      max-width: 52rem;
+      padding-top: clamp(2rem, 4vw, 3rem);
+    }
+
+    .why-section__footer-text {
+      font-family: var(--f-sans, Georgia, serif);
+      font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+      line-height: 1.75;
+      color: #444;
+      margin: 0 0 2.5rem;
+    }
+
+    .why-section__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--f-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #111;
+      padding: 0.85rem 2rem;
+      background: rgba(17, 17, 17, 0.04);
+      border: 1px solid rgba(17, 17, 17, 0.1);
+      border-radius: 2px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: background 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+    }
+
+    .why-section__cta:hover {
+      background: rgba(17, 17, 17, 0.08);
+      border-color: var(--c-gold, #C8A96E);
+      color: var(--c-gold, #C8A96E);
+    }
+
+    @media (max-width: 900px) {
+      .why-section__grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .why-section__grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <style>
+    main {
+      height: calc(var(--vh, 1vh) * 100);
+      background-color: #090909;
+    }
+
+    .hero-shell {
+      padding-top: 4rem;
+    }
+
+    .hero-lockup {
+      width: min(36rem, calc(100vw - 2rem));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-title {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .hero-title-main {
+      display: block;
+      font-family: var(--f-display, 'Cormorant Garamond', Georgia, serif);
+      font-weight: 400;
+      font-size: clamp(1.95rem, 4.8vw, 4rem);
+      line-height: 1;
+      letter-spacing: 0.015em;
+      color: rgba(255, 255, 255, 0.98);
+      text-shadow: 0 12px 34px rgba(0, 0, 0, 0.28);
+      white-space: nowrap;
+    }
+
+    .hero-title-accent {
+      display: block;
+      font-family: var(--f-display, 'Cormorant Garamond', Georgia, serif);
+      font-size: clamp(1.7rem, 2.8vw, 2.45rem);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 0.9;
+      letter-spacing: 0.01em;
+      color: rgba(255, 255, 255, 0.96);
+    }
+
+    .hero-subtitle {
+      font-family: var(--f-display, 'Cormorant Garamond', Georgia, serif);
+      font-size: clamp(0.92rem, 1vw, 1rem);
+      line-height: 1.35;
+      letter-spacing: 0.01em;
+      color: rgba(255, 255, 255, 0.84);
+      max-width: 14rem;
+      margin: 1.15rem 0 0;
+      text-wrap: balance;
+    }
+
+    @media (max-width: 640px) {
+      .hero-lockup {
+        width: min(22rem, calc(100vw - 2rem));
+      }
+
+      .hero-title {
+        gap: 0.35rem;
+      }
+
+      .hero-title-main {
+        font-size: clamp(1.7rem, 7.2vw, 2.35rem);
+        letter-spacing: 0.01em;
+      }
+
+      .hero-title-accent {
+        font-size: clamp(1.35rem, 5.6vw, 1.8rem);
+      }
+
+      .hero-subtitle {
+        max-width: 13rem;
+        margin-top: 1rem;
+      }
+    }
+
+    .manifesto-editorial {
+      background: #FFFFFF;
+      padding: clamp(5rem, 10vw, 10rem) clamp(1.5rem, 6vw, 6rem);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(5rem, 10vw, 12rem);
+    }
+
+    .manifesto-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem, 5vw, 6rem);
+      align-items: center;
+    }
+
+    .manifesto-row--reversed .manifesto-row__image { order: 1; }
+    .manifesto-row--reversed .manifesto-row__text  { order: 2; }
+
+    .manifesto-row__text {
+      padding-top: clamp(2rem, 5vw, 5rem);
+    }
+
+    .manifesto-row--reversed .manifesto-row__text {
+      padding-top: 0;
+      padding-bottom: clamp(2rem, 5vw, 5rem);
+    }
+
+    .manifesto-row__label {
+      display: block;
+      font-family: var(--f-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--c-gold-dim);
+      margin-bottom: 1.5rem;
+    }
+
+    .manifesto-row__text .reveal-line {
+      overflow: hidden;
+      line-height: 1.08;
+    }
+
+    .manifesto-row__text .reveal-line span {
+      display: block;
+      font-family: var(--f-display);
+      font-size: clamp(2.2rem, 4vw, 4rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--c-white);
+      letter-spacing: -0.02em;
+      transform: translateY(110%) skewY(6deg);
+      opacity: 0;
+      transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.7s ease;
+    }
+
+    .manifesto-row__text .reveal-line:nth-child(1) span { transition-delay: 0s; }
+    .manifesto-row__text .reveal-line:nth-child(2) span { transition-delay: 0.12s; }
+    .manifesto-row__text .reveal-line:nth-child(3) span { transition-delay: 0.24s; }
+    .manifesto-row__text .reveal-line:nth-child(4) span { transition-delay: 0.36s; }
+
+    .manifesto-row__image {
+      overflow: hidden;
+      border-radius: 2px;
+      aspect-ratio: 3 / 4;
+      max-height: 72vh;
+    }
+
+    .manifesto-row__image-inner {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .manifesto-row__image-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transform: scale(1.08);
+      transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+      display: block;
+    }
+
+    [data-reveal="text"] {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.9s ease, transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    [data-reveal="image"] {
+      opacity: 0;
+      transform: translateY(60px);
+      transition: opacity 0.9s ease, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .manifesto-row--reversed [data-reveal="text"]  {
+      transition: opacity 0.9s ease, transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .manifesto-row--reversed [data-reveal="image"] {
+      transition: opacity 0.9s ease, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    [data-reveal="text"].is-revealed,
+    [data-reveal="image"].is-revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    [data-reveal="text"].is-revealed .reveal-line span {
+      transform: translateY(0) skewY(0deg);
+      opacity: 1;
+    }
+
+    [data-reveal="image"].is-revealed .manifesto-row__image-inner img {
+      transform: scale(1);
+    }
+
+    @media (max-width: 900px) {
+      .manifesto-editorial {
+        gap: clamp(4rem, 8vw, 6rem);
+        padding: clamp(3rem, 6vw, 5rem) clamp(1.2rem, 4vw, 2rem);
+      }
+
+      .manifesto-row,
+      .manifesto-row--reversed {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .manifesto-row--reversed .manifesto-row__image { order: 1; }
+      .manifesto-row--reversed .manifesto-row__text  { order: 2; }
+
+      .manifesto-row .manifesto-row__text { order: 1; }
+      .manifesto-row .manifesto-row__image { order: 2; }
+      .manifesto-row--reversed .manifesto-row__text { order: 1; }
+      .manifesto-row--reversed .manifesto-row__image { order: 2; }
+
+      .manifesto-row__text,
+      .manifesto-row--reversed .manifesto-row__text {
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+
+      .manifesto-row__image {
+        aspect-ratio: 4 / 3;
+        max-height: none;
+      }
+
+      [data-reveal="text"] {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+
+      [data-reveal="image"] {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+
+      .manifesto-row__text .reveal-line span {
+        font-size: clamp(1.8rem, 7vw, 3rem);
+        transform: none;
+        opacity: 1;
+        transition: none;
+      }
+
+      [data-reveal="image"] .manifesto-row__image-inner img {
+        transform: none;
+        transition: none;
+      }
+    }
+  </style>
+
+  <script>
+    function initManifestoRows() {
+      const isMobile = window.innerWidth <= 900;
+
+      if (isMobile) {
+        document.querySelectorAll('[data-reveal="text"], [data-reveal="image"]').forEach((el) => {
+          el.classList.add('is-revealed');
+        });
+        return;
+
+      } else {
+        const rows = document.querySelectorAll('[data-manifesto-row]');
+
+        rows.forEach((row) => {
+          const textEl = row.querySelector('[data-reveal="text"]');
+          const imageEl = row.querySelector('[data-reveal="image"]');
+
+          const textObserver = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('is-revealed');
+                  textObserver.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.15, rootMargin: '0px 0px -60px 0px' }
+          );
+
+          const imageObserver = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('is-revealed');
+                  imageObserver.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.8, rootMargin: '0px 0px -180px 0px' }
+          );
+
+          if (textEl) textObserver.observe(textEl);
+          if (imageEl) imageObserver.observe(imageEl);
+        });
+      }
+    }
+
+    document.addEventListener('astro:page-load', initManifestoRows);
+    if (document.readyState !== 'loading') initManifestoRows();
+  </script>
+
+  <script>
+    // @ts-ignore
+    import { gsap } from 'gsap';
+    // @ts-ignore
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener('astro:before-preparation', () => {
+      ScrollTrigger.getAll().forEach((st: any) => st.kill(true));
+      ScrollTrigger.clearScrollMemory();
+      ScrollTrigger.refresh();
+    });
+  </script>
+</Layout>

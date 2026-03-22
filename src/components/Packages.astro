@@ -1,0 +1,655 @@
+﻿---
+const packages = [
+  {
+    days: "7 Dni",
+    name: "Dahab",
+    accent: "#a8d8ea",
+    price: "od 4 200 zł",
+    tags: "Nurkowanie · Koralowce · Bohema",
+    href: "/pakiety/dahab",
+    bg: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1920&q=80",
+  },
+  {
+    days: "5 Dni",
+    name: "Sharm",
+    accent: "#f7d98e",
+    price: "od 6 800 zł",
+    tags: "Luksus · Resort · SPA · Rafy",
+    href: "/pakiety/sharm",
+    bg: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1920&q=80",
+  },
+  {
+    days: "4 Dni",
+    name: "Synaj",
+    accent: "#f7b88c",
+    price: "od 2 900 zł",
+    tags: "Góry · Pielgrzymka · Wschód słońca",
+    href: "/pakiety/synaj",
+    bg: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80",
+  },
+  {
+    days: "3 Dni",
+    name: "Ras Mohammed",
+    accent: "#a8f0d8",
+    price: "od 3 100 zł",
+    tags: "Park Narodowy · Snorkeling · Dzikość",
+    href: "/pakiety/ras-mohammed",
+    bg: "https://images.unsplash.com/photo-1559494007-9f5847c49d94?auto=format&fit=crop&w=1920&q=80",
+  },
+];
+---
+
+<!-- Header intro -->
+<section class="pkg-header" id="pakiety">
+  <p class="pkg-header__label">Pakiety</p>
+  <h2 class="pkg-header__title">
+    <span class="pkg-h-line"><span class="pkg-h-inner">Podróże</span></span>
+    <span class="pkg-h-line"><span class="pkg-h-inner">z duszą</span></span>
+  </h2>
+  <a href="/pakiety" class="pkg-header__cta">
+    Wszystkie pakiety <span class="pkg-cta-arrow">↗</span>
+  </a>
+</section>
+
+<!-- Animated fullscreen sections -->
+<div class="pkg-sections-wrap" data-pkg-wrap>
+  {packages.map((pkg, i) => (
+    <section
+      class={`pkg-section pkg-section--${i + 1}`}
+      data-pkg-section
+      style={`--accent: ${pkg.accent};`}
+    >
+      <div class="pkg-section__outer">
+        <div class="pkg-section__inner">
+          <div
+            class="pkg-section__bg"
+            style={`background-image: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 100%), url('${pkg.bg}');`}
+          >
+            <!-- Card overlay content -->
+            <div class="pkg-section__content">
+              <span class="pkg-section__num">0{i + 1}</span>
+              <p class="pkg-section__days">{pkg.days}</p>
+              <h3 class="pkg-section__name">{pkg.name}</h3>
+              <p class="pkg-section__tags">{pkg.tags}</p>
+              <div class="pkg-section__footer">
+                <span class="pkg-section__price">{pkg.price} / os.</span>
+                <a href={pkg.href} class="pkg-section__cta">
+                  Sprawdź <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  ))}
+</div>
+
+<style>
+  /* ─── HEADER ─── */
+  .pkg-header {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 55vh;
+    padding: clamp(4rem, 8vw, 8rem) clamp(2rem, 6vw, 6.5rem) clamp(3rem, 6vw, 6rem);
+    background: #FAF8F3;
+  }
+
+  .pkg-header__label {
+    font-family: var(--f-mono);
+    font-size: 0.55rem;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--c-gold-dim);
+    margin: 0 0 1.5rem;
+    opacity: 0;
+  }
+
+  .pkg-header__title {
+    font-family: 'Cinzel Decorative', Georgia, serif;
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    color: var(--c-white);
+    margin: 0 0 3rem;
+  }
+
+  .pkg-h-line  { display: block; overflow: hidden; }
+  .pkg-h-inner { display: block; }
+
+  .pkg-header__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--f-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--c-white);
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--c-gold);
+    transition: color 0.4s ease;
+    opacity: 0;
+  }
+
+  .pkg-header__cta:hover { color: var(--c-gold); }
+  .pkg-cta-arrow { display: inline-block; transition: transform 0.4s ease; }
+  .pkg-header__cta:hover .pkg-cta-arrow { transform: translate(3px, -3px); }
+
+  /* ─── SECTIONS WRAPPER ─── */
+  .pkg-sections-wrap {
+    position: relative;
+    z-index: 1;
+    background: #000;
+    height: calc(var(--vh, 1vh) * 100);
+    overflow: hidden;
+  }
+
+  /* ─── SECTION (fullscreen, absolute within wrapper) ─── */
+  .pkg-section {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    visibility: hidden;
+    will-change: transform;
+  }
+
+  .pkg-section__outer,
+  .pkg-section__inner {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    will-change: transform;
+  }
+
+  .pkg-section__bg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* ─── CONTENT OVERLAY ─── */
+  .pkg-section__content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 90vw;
+    max-width: 700px;
+  }
+
+  .pkg-section__num {
+    font-family: var(--f-mono);
+    font-size: 0.5rem;
+    letter-spacing: 0.28em;
+    color: rgba(255, 255, 255, 0.3);
+    margin-bottom: 1.5rem;
+  }
+
+  .pkg-section__days {
+    font-family: var(--f-mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.8rem;
+  }
+
+  .pkg-section__name {
+    font-family: 'Cinzel Decorative', Georgia, serif;
+    font-size: clamp(2.2rem, 5.5vw, 5rem);
+    font-weight: 400;
+    color: #FAF8F3;
+    margin: 0;
+    line-height: 1.05;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .pkg-section__tags {
+    font-family: var(--f-mono);
+    font-size: 0.5rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 1.5rem 0 2rem;
+  }
+
+  .pkg-section__footer {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(200, 169, 110, 0.25);
+  }
+
+  .pkg-section__price {
+    font-family: var(--f-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+  }
+
+  .pkg-section__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: var(--f-mono);
+    font-size: 0.5rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(200,169,110,0.5);
+    padding-bottom: 0.2rem;
+    transition: color 0.3s ease, border-color 0.3s ease;
+  }
+
+  .pkg-section__cta:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  /* ─── MOBILE ─── */
+  @media (max-width: 768px) {
+    .pkg-header {
+      min-height: 40vh;
+      padding: 3rem 1.5rem 2.5rem;
+    }
+
+    .pkg-section__bg {
+      align-items: flex-start;
+      padding-top: 25vh;
+    }
+
+    .pkg-section__name {
+      font-size: clamp(1.8rem, 8vw, 3rem);
+    }
+
+    .pkg-section__content {
+      max-width: 90vw;
+    }
+
+    .pkg-section__footer {
+      gap: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  // @ts-nocheck
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  let pkgCtx = null;
+
+  function getLenis() {
+    return window.lenis;
+  }
+
+  function initPackages() {
+    pkgCtx?.revert();
+
+    const wrap = document.querySelector('[data-pkg-wrap]');
+    const sections = document.querySelectorAll('[data-pkg-section]');
+    if (!wrap || !sections.length) return;
+
+    const images = wrap.querySelectorAll('.pkg-section__bg');
+    const contents = wrap.querySelectorAll('.pkg-section__content');
+    const outerWrappers = Array.from(wrap.querySelectorAll('.pkg-section__outer'));
+    const innerWrappers = Array.from(wrap.querySelectorAll('.pkg-section__inner'));
+
+    let listening = false;
+    let direction = 'down';
+    let current;
+    let next = 0;
+    let sectionLocked = false;
+    let animating = false;
+
+    const touch = { startY: 0, dy: 0 };
+    const tlDefaults = { ease: 'slow.inOut', duration: 1.25 };
+
+    gsap.set(outerWrappers, { yPercent: 100 });
+    gsap.set(innerWrappers, { yPercent: -100 });
+
+    // ── Header reveal ──
+    gsap.timeline({
+      scrollTrigger: { trigger: '.pkg-header', start: 'top 85%', once: true },
+    })
+      .fromTo('.pkg-header__label',
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.9, ease: 'power3' }
+      )
+      .fromTo('.pkg-h-inner',
+        { y: 110 },
+        { y: 0, duration: 1.5, ease: 'power4', stagger: 0.1 },
+        0.1
+      )
+      .fromTo('.pkg-header__cta',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.9, ease: 'power3' },
+        0.5
+      );
+
+    // ── Lenis helpers ──
+    function stopLenis() {
+      const lenis = getLenis();
+      if (!lenis) return;
+      lenis.stop();
+      ScrollTrigger.refresh();
+    }
+
+    function startLenis() {
+      getLenis()?.start();
+    }
+
+    // ── Mobile detection ──
+    const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
+
+    let pinST = null;
+
+    function buildDesktopPin() {
+      pinST = ScrollTrigger.create({
+        trigger: wrap,
+        pin: true,
+        start: 'top top',
+        end: () => `+=${sections.length * 100}vh`,
+        pinSpacing: true,
+        onEnter: () => { sectionLocked = true; stopLenis(); },
+        onLeave: () => { sectionLocked = false; startLenis(); },
+        onEnterBack: () => { sectionLocked = true; stopLenis(); },
+        onLeaveBack: () => { sectionLocked = false; startLenis(); },
+      });
+    }
+
+    // ── Mobile: lock body scroll via overflow:hidden on <html> ──
+    function lockBodyScroll() {
+      const scrollY = window.scrollY;
+      document.documentElement.style.setProperty('--scroll-lock-y', `-${scrollY}px`);
+      document.documentElement.classList.add('pkg-scroll-locked');
+      stopLenis();
+      sectionLocked = true;
+    }
+
+    function unlockBodyScroll() {
+      const scrollY = Math.abs(parseInt(
+        document.documentElement.style.getPropertyValue('--scroll-lock-y') || '0'
+      ));
+      document.documentElement.classList.remove('pkg-scroll-locked');
+      window.scrollTo({ top: scrollY, behavior: 'instant' });
+      startLenis();
+      sectionLocked = false;
+    }
+
+    // IntersectionObserver for mobile lock/unlock
+    let mobileObserver = null;
+
+    function buildMobileObserver() {
+      mobileObserver = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting && current !== undefined) {
+            lockBodyScroll();
+          }
+        });
+      }, { threshold: 0.95 });
+
+      mobileObserver.observe(wrap);
+    }
+
+    // ── Content animations ──
+    function revealContent() {
+      const content = contents[next];
+      if (!content) return gsap.timeline();
+      return gsap.fromTo(Array.from(content.children), {
+        autoAlpha: 0, y: 30,
+      }, {
+        autoAlpha: 1, y: 0,
+        duration: 0.8,
+        ease: 'power2',
+        stagger: 0.06,
+      });
+    }
+
+    function hideContent(idx) {
+      const content = contents[idx];
+      if (!content) return;
+      gsap.set(Array.from(content.children), { autoAlpha: 0, y: 30 });
+    }
+
+    function slideIn() {
+      if (current !== undefined) gsap.set(sections[current], { zIndex: 0 });
+      gsap.set(sections[next], { autoAlpha: 1, zIndex: 1 });
+      gsap.set(images[next], { yPercent: 0 });
+      hideContent(next);
+
+      const tl = gsap.timeline({
+        paused: true,
+        defaults: tlDefaults,
+        onComplete: () => {
+          listening = true;
+          animating = false;
+          current = next;
+        },
+      })
+        .to([outerWrappers[next], innerWrappers[next]], { yPercent: 0 }, 0)
+        .from(images[next], { yPercent: 15 }, 0)
+        .add(revealContent(), 0.3);
+
+      if (current !== undefined) {
+        tl.add(
+          gsap.to(images[current], { yPercent: -15, ...tlDefaults }), 0
+        ).add(
+          gsap.timeline()
+            .set(outerWrappers[current], { yPercent: 100 })
+            .set(innerWrappers[current], { yPercent: -100 })
+            .set(images[current], { yPercent: 0 })
+            .set(sections[current], { autoAlpha: 0 })
+        );
+      }
+
+      tl.play(0);
+    }
+
+    function slideOut() {
+      gsap.set(sections[current], { zIndex: 1 });
+      gsap.set(sections[next], { autoAlpha: 1, zIndex: 0 });
+      gsap.set([outerWrappers[next], innerWrappers[next]], { yPercent: 0 });
+      gsap.set(images[next], { yPercent: 0 });
+      hideContent(next);
+
+      gsap.timeline({
+        defaults: tlDefaults,
+        onComplete: () => {
+          listening = true;
+          animating = false;
+          current = next;
+        },
+      })
+        .to(outerWrappers[current], { yPercent: 100 }, 0)
+        .to(innerWrappers[current], { yPercent: -100 }, 0)
+        .to(images[current], { yPercent: 15 }, 0)
+        .from(images[next], { yPercent: -15 }, 0)
+        .add(revealContent(), '>-0.8')
+        .set(images[current], { yPercent: 0 });
+    }
+
+    function releaseScroll() {
+      if (isMobile()) {
+        unlockBodyScroll();
+      } else {
+        sectionLocked = false;
+        startLenis();
+      }
+    }
+
+    function handleDirection() {
+      if (animating) return;
+      animating = true;
+      listening = false;
+
+      if (direction === 'down') {
+        const nextIdx = (current ?? -1) + 1;
+        if (nextIdx >= sections.length) {
+          animating = false;
+          listening = true;
+          releaseScroll();
+          return;
+        }
+        next = nextIdx;
+        slideIn();
+      } else {
+        const prevIdx = (current ?? 0) - 1;
+        if (prevIdx < 0) {
+          animating = false;
+          listening = true;
+          releaseScroll();
+          return;
+        }
+        next = prevIdx;
+        slideOut();
+      }
+    }
+
+    // ── Wheel (desktop) ──
+    let isInView = false;
+    const visObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { isInView = e.isIntersecting; });
+    }, { threshold: 0.3 });
+    visObs.observe(wrap);
+
+    function onWheel(e) {
+      if (!isInView || !sectionLocked) return;
+      direction = e.deltaY > 0 ? 'down' : 'up';
+
+      if (direction === 'down' && listening && current === sections.length - 1) {
+        releaseScroll(); return;
+      }
+      if (direction === 'up' && listening && (current === undefined || current === 0)) {
+        releaseScroll(); return;
+      }
+
+      e.preventDefault();
+      if (!listening) return;
+      handleDirection();
+    }
+
+    // ── Touch (mobile) ──
+    let touchVelocity = 0;
+    let lastTouchY = 0;
+    let lastTouchTime = 0;
+
+    function onTouchStart(e) {
+      touch.startY = e.changedTouches[0].pageY;
+      lastTouchY = touch.startY;
+      lastTouchTime = Date.now();
+      touchVelocity = 0;
+    }
+
+    function onTouchMove(e) {
+      if (!sectionLocked) return;
+
+      const dy = e.changedTouches[0].pageY - touch.startY;
+      const goingDown = dy < 0;
+      const goingUp = dy > 0;
+
+      if (goingDown && listening && current === sections.length - 1) return;
+      if (goingUp && listening && (current === undefined || current === 0)) return;
+
+      e.preventDefault();
+
+      const now = Date.now();
+      const currentY = e.changedTouches[0].pageY;
+      const dt = now - lastTouchTime;
+      if (dt > 0) touchVelocity = (currentY - lastTouchY) / dt;
+      lastTouchY = currentY;
+      lastTouchTime = now;
+    }
+
+    function onTouchEnd(e) {
+      if (!sectionLocked) return;
+
+      touch.dy = e.changedTouches[0].pageY - touch.startY;
+
+      const minDistance = 40;
+      const minVelocity = 0.1;
+
+      if (Math.abs(touch.dy) < minDistance) return;
+      if (Math.abs(touchVelocity) < minVelocity) return;
+
+      if (touch.dy > 0) direction = 'up';
+      if (touch.dy < 0) direction = 'down';
+
+      if (direction === 'down' && listening && current === sections.length - 1) {
+        releaseScroll(); return;
+      }
+      if (direction === 'up' && listening && (current === undefined || current === 0)) {
+        releaseScroll(); return;
+      }
+
+      if (!listening) return;
+      handleDirection();
+    }
+
+    // ── Init ──
+    if (isMobile()) {
+      buildMobileObserver();
+    } else {
+      buildDesktopPin();
+    }
+
+    document.addEventListener('wheel', onWheel, { passive: false });
+    document.addEventListener('touchstart', onTouchStart, { passive: true });
+    document.addEventListener('touchmove', onTouchMove, { passive: false });
+    document.addEventListener('touchend', onTouchEnd, { passive: true });
+
+    slideIn();
+
+    // ── Cleanup ──
+    pkgCtx = {
+      revert() {
+        startLenis();
+        document.documentElement.classList.remove('pkg-scroll-locked');
+        pinST?.kill();
+        visObs.disconnect();
+        mobileObserver?.disconnect();
+        document.removeEventListener('wheel', onWheel);
+        document.removeEventListener('touchstart', onTouchStart);
+        document.removeEventListener('touchmove', onTouchMove);
+        document.removeEventListener('touchend', onTouchEnd);
+        gsap.killTweensOf(sections);
+        sections.forEach(s => { s.style.cssText = ''; });
+        outerWrappers.forEach(o => { o.style.cssText = ''; });
+        innerWrappers.forEach(i => { i.style.cssText = ''; });
+      }
+    };
+  }
+
+  document.addEventListener('astro:before-preparation', () => pkgCtx?.revert());
+
+  document.addEventListener('astro:page-load', () => {
+    if (document.querySelector('[data-pkg-wrap]')) initPackages();
+  });
+
+  if (document.readyState !== 'loading') {
+    if (document.querySelector('[data-pkg-wrap]')) initPackages();
+  }
+</script>

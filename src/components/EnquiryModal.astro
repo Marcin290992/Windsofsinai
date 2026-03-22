@@ -1,0 +1,145 @@
+---
+// EnquiryModal.astro
+// Enquiry modal — available globally via Layout
+---
+
+<div id="dp-enquiry" class="dp-enq" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Prywatne zapytanie">
+  <div class="dp-enq__backdrop"></div>
+  <div class="dp-enq__panel">
+    <button class="dp-enq__close" type="button" data-close-enquiry aria-label="Zamknij">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+
+    <div class="dp-enq__inner" id="dp-enq-inner">
+      <h2 class="dp-enq__title">Prywatne zapytanie</h2>
+      <p class="dp-enq__subtitle">Opowiedz nam o swojej wymarzonej podróży</p>
+
+      <form class="dp-enq__form" id="dp-enq-form" novalidate>
+        <input type="hidden" name="destination" class="dp-enq__dest" />
+
+        <div class="dp-enq__field">
+          <input type="text" name="name" required placeholder=" " autocomplete="name" />
+          <label>Imię i nazwisko</label>
+        </div>
+        <div class="dp-enq__field">
+          <input type="date" name="travel_date" required placeholder=" " />
+          <label>Termin podróży</label>
+        </div>
+        <div class="dp-enq__field dp-enq__field--select">
+          <select name="people" required>
+            <option value="" disabled selected></option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+          <label>Liczba osób</label>
+        </div>
+        <div class="dp-enq__field dp-enq__field--select">
+          <select name="budget" required>
+            <option value="" disabled selected></option>
+            <option value="do 3 000 PLN">do 3 000 PLN</option>
+            <option value="3 000 – 6 000 PLN">3 000 – 6 000 PLN</option>
+            <option value="6 000 – 12 000 PLN">6 000 – 12 000 PLN</option>
+            <option value="Bez limitu">Bez limitu</option>
+          </select>
+          <label>Budżet na osobę</label>
+        </div>
+        <div class="dp-enq__field">
+          <textarea name="message" rows="4" placeholder=" "></textarea>
+          <label>Wiadomość</label>
+        </div>
+
+        <button type="submit" class="dp-enq__submit">
+          <span>Wyślij zapytanie</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+        </button>
+      </form>
+    </div>
+
+    <div class="dp-enq__thanks" id="dp-enq-thanks" hidden>
+      <h2 class="dp-enq__title">Dziękujemy</h2>
+      <p class="dp-enq__subtitle">Odpiszemy w ciągu 24 godzin.</p>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  // @ts-nocheck
+  (function() {
+    function initEnquiryModal() {
+      var modal = document.getElementById('dp-enquiry');
+      if (!modal) return;
+
+      var inner     = document.getElementById('dp-enq-inner');
+      var thanks    = document.getElementById('dp-enq-thanks');
+      var form      = document.getElementById('dp-enq-form');
+      var destInput = modal.querySelector('.dp-enq__dest');
+      var closeBtns = modal.querySelectorAll('[data-close-enquiry]');
+      var backdrop  = modal.querySelector('.dp-enq__backdrop');
+
+      function getActiveDest() {
+        var active = document.querySelector('.dp-dock__btn.is-active .dp-dock__name');
+        return active ? active.textContent : '';
+      }
+
+      function openModal() {
+        if (modal.classList.contains('is-open')) return;
+        if (destInput) destInput.value = getActiveDest();
+        if (form) form.reset();
+        if (inner) inner.hidden = false;
+        if (thanks) thanks.hidden = true;
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        if (window.lenis) window.lenis.stop();
+      }
+
+      function closeModal() {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        if (window.lenis) window.lenis.start();
+      }
+
+      closeBtns.forEach(function(b) { b.addEventListener('click', closeModal); });
+      if (backdrop) backdrop.addEventListener('click', closeModal);
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+      });
+
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          if (inner) inner.hidden = true;
+          if (thanks) thanks.hidden = false;
+        });
+      }
+
+      window.__openEnquiryModal = openModal;
+    }
+
+    if (!window.__enqDelegated) {
+      window.__enqDelegated = true;
+      document.addEventListener('click', function(e) {
+        if (e.target.closest('[data-open-enquiry]') && window.__openEnquiryModal) {
+          e.preventDefault();
+          window.__openEnquiryModal();
+        }
+      });
+    }
+
+    function enqInit() { initEnquiryModal(); }
+    document.addEventListener('astro:page-load', enqInit);
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', enqInit, { once: true });
+    } else {
+      enqInit();
+    }
+  })();
+</script>

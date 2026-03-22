@@ -1,0 +1,628 @@
+---
+const destinations = [
+  {
+    num: "01",
+    titleLines: ["Dahab"],
+    tags: "Nurkowanie · Relaks · Bohema",
+    href: "/dahab",
+    bg: "#E8E0D0",
+    img: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=900&q=80",
+    imgAlt: "Nurkowanie w Dahab, Morze Czerwone",
+  },
+  {
+    num: "02",
+    titleLines: ["Sharm", "el-Sheikh"],
+    tags: "Luksus · Rafy · Resort",
+    href: "/sharm",
+    bg: "#FAF8F3",
+    img: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=900&q=80",
+    imgAlt: "Sharm el-Sheikh — luksusowy resort nad Morzem Czerwonym",
+  },
+  {
+    num: "03",
+    titleLines: ["Góra", "Synaj"],
+    tags: "Pielgrzymka · Wschód słońca · Mistycyzm",
+    href: "/gora-synaj",
+    bg: "#E8E0D0",
+    img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=80",
+    imgAlt: "Góra Synaj o wschodzie słońca",
+  },
+  {
+    num: "04",
+    titleLines: ["Ras", "Mohammed"],
+    tags: "Park Narodowy · Snorkeling · Dzikość",
+    href: "/ras-mohammed",
+    bg: "#FAF8F3",
+    img: "https://images.unsplash.com/photo-1559494007-9f5847c49d94?auto=format&fit=crop&w=900&q=80",
+    imgAlt: "Ras Mohammed — Park Narodowy, podwodne koralowce",
+  },
+  {
+    num: "05",
+    titleLines: ["Nuweiba"],
+    tags: "Spokój · Plaże · Beduini",
+    href: "/nuweiba",
+    bg: "#E8E0D0",
+    img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80",
+    imgAlt: "Plaże Nuweiba — cisza i spokój",
+  },
+  {
+    num: "06",
+    titleLines: ["St.", "Catherine"],
+    tags: "Klasztor · Historia · Pustynia",
+    href: "/st-catherine",
+    bg: "#FAF8F3",
+    img: "https://images.unsplash.com/photo-1491466424936-e304919aada7?auto=format&fit=crop&w=900&q=80",
+    imgAlt: "Klasztor Świętej Katarzyny na Synaju",
+  },
+];
+---
+
+<!-- ─── Section header ─────────────────────────────────────────── -->
+<section class="dest-header" id="destynacje">
+  <p class="dest-header__label">Destynacje</p>
+  <h2 class="dest-header__title">
+    <span class="dest-h-line"><span class="dest-h-inner">Sześć oblicz</span></span>
+    <span class="dest-h-line"><span class="dest-h-inner">Synaju</span></span>
+  </h2>
+  <a href="/destynacje" class="dest-header__cta">
+    Zobacz wszystkie <span class="dest-cta-arrow">↗</span>
+  </a>
+</section>
+
+<!-- ─── Destination slides ─────────────────────────────────────── -->
+{destinations.map((dest, i) => (
+  <section class={`dest-slide dest-slide--${i + 1} ${i % 2 === 1 ? 'dest-slide--reverse' : ''}`} id={`dest-${i + 1}`}>
+
+    <!-- Left: text -->
+    <div class="dest-col dest-col--left">
+      <div class="dest-content" style={`--bg: ${dest.bg};`}>
+        <span class="dest-num">{dest.num}</span>
+        <h3 class="dest-title">
+          {dest.titleLines.map((line) => (
+            <span class="dest-title__line">
+              <span class="dest-title__inner">{line}</span>
+            </span>
+          ))}
+        </h3>
+        <p class="dest-tags">{dest.tags}</p>
+        <a href={dest.href} class="dest-link" aria-label={`Odkryj ${dest.titleLines.join(' ')}`}>
+          <div class="dest-link__circ"></div>
+          <div class="dest-link__line"></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Right: parallax image placeholder -->
+    <div class="dest-col dest-col--right">
+      <div class="dest-img-wrap">
+        <img
+          src={dest.img}
+          alt={dest.imgAlt}
+          class="dest-img"
+          loading={i === 0 ? "eager" : "lazy"}
+        />
+      </div>
+    </div>
+
+  </section>
+))}
+
+<style>
+  /* ══ HEADER ════════════════════════════════════════════════════ */
+  .dest-header {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 55vh;
+    padding: clamp(4rem, 8vw, 8rem) clamp(2rem, 6vw, 6.5rem) clamp(3rem, 6vw, 6rem);
+    background: var(--c-bg, #FAF8F3);
+  }
+
+  .dest-header__label {
+    font-family: var(--f-mono);
+    font-size: 0.55rem;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--c-gold-dim);
+    margin: 0 0 1.5rem;
+    opacity: 0; /* animated by GSAP */
+  }
+
+  .dest-header__title {
+    font-family: var(--f-heading, 'Cinzel Decorative', Georgia, serif);
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    color: var(--c-white);
+    margin: 0 0 3rem;
+  }
+
+  .dest-h-line  { display: block; overflow: hidden; }
+  .dest-h-inner { display: block; }
+
+  .dest-header__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--f-mono);
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--c-white);
+    padding: 0.85rem 2rem;
+    background: rgba(17, 17, 17, 0.04);
+    border: 1px solid rgba(17, 17, 17, 0.1);
+    border-radius: 2px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: background 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+    opacity: 0; /* animated by GSAP */
+  }
+
+  .dest-header__cta:hover {
+    background: rgba(17, 17, 17, 0.08);
+    border-color: var(--c-gold);
+    color: var(--c-gold);
+  }
+
+  .dest-cta-arrow {
+    display: inline-block;
+    transition: transform 0.4s ease;
+  }
+
+  .dest-header__cta:hover .dest-cta-arrow { transform: translate(3px, -3px); }
+
+  /* ══ SLIDES ════════════════════════════════════════════════════ */
+  .dest-slide {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: stretch;
+    height: calc(var(--vh, 1vh) * 100);
+    overflow: hidden;
+  }
+
+  .dest-col       { flex-basis: 50%; }
+  .dest-col--left  { position: relative; z-index: 1; }
+  .dest-col--right {
+    position: relative;
+    overflow: hidden;
+    flex-basis: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── Content panel ── */
+  .dest-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+    padding: clamp(2.5rem, 4vw, 4.5rem) clamp(2rem, 6vw, 6rem) clamp(3.5rem, 7vw, 7rem);
+    background: var(--bg);
+  }
+
+  .dest-num {
+    position: absolute;
+    top:  clamp(2rem, 3.5vw, 3.5rem);
+    left: clamp(2rem, 6vw,   6rem);
+    font-family: var(--f-mono);
+    font-size: 0.55rem;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    color: var(--c-muted);
+    opacity: 0; /* animated by GSAP */
+  }
+
+  /* ── Destination title ── */
+  .dest-title {
+    font-family: var(--f-heading, 'Cinzel Decorative', Georgia, serif);
+    font-size: clamp(2rem, 5.5vw, 5rem);
+    font-weight: 400;
+    line-height: 0.93;
+    letter-spacing: 0.02em;
+    color: var(--c-white);
+    margin: 0 0 clamp(1rem, 2vw, 1.8rem);
+  }
+
+  .dest-title__line  { display: block; overflow: hidden; }
+  .dest-title__inner { display: block; }
+
+  /* ── Tags ── */
+  .dest-tags {
+    font-family: var(--f-mono);
+    font-size: 0.55rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+    margin: 0 0 clamp(1.5rem, 3vw, 2.5rem);
+    opacity: 0; /* animated by GSAP */
+  }
+
+  /* ── Circle + line CTA ── */
+  .dest-link {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    width: 75px;
+    height: 53px;
+    text-decoration: none;
+    opacity: 0; /* animated by GSAP */
+  }
+
+  .dest-link > * { pointer-events: none; }
+
+  .dest-link__circ {
+    width: 53px;
+    height: 53px;
+    border-radius: 50%;
+    border: 1px solid rgba(17, 17, 17, 0.12);
+    background: rgba(17, 17, 17, 0.03);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: border-color 0.45s ease, background 0.45s ease;
+  }
+
+  .dest-link__line {
+    position: absolute;
+    top: 25px;
+    left: 0;
+    width: 64px;
+    height: 1px;
+    background: var(--c-muted);
+    transform-origin: right center;
+    transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1), background 0.45s ease;
+  }
+
+  .dest-link:hover .dest-link__circ {
+    border-color: var(--c-gold);
+    background: rgba(200, 169, 110, 0.12);
+  }
+
+  .dest-link:hover .dest-link__line {
+    transform: scaleX(0.35) translateX(18px);
+    background: var(--c-gold);
+  }
+
+  /* ── Right column: image ── */
+  .dest-img-wrap {
+    position: absolute;
+    top: -15%;
+    left: 0;
+    width: 100%;
+    height: 130%;
+  }
+
+  .dest-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  @media (min-width: 1025px) {
+    .dest-slide--reverse .dest-col--left {
+      order: 2;
+    }
+
+    .dest-slide--reverse .dest-col--right {
+      order: 1;
+    }
+  }
+
+  /* ══ RESPONSIVE ════════════════════════════════════════════ */
+  @media (max-width: 768px) {
+
+    .dest-header {
+      min-height: auto;
+      padding: 10vw 8vw 8vw;
+    }
+
+    /* Vertical stack */
+    .dest-slide {
+      flex-direction: column;
+      align-items: stretch;
+      height: auto;
+    }
+
+    /* Image col — force to top, fixed height, clip parallax overflow */
+    .dest-col--right {
+      order: -1;
+      flex: 0 0 55svh;
+      width: 100%;
+      height: 55svh;
+      position: relative;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .dest-img-wrap {
+      position: absolute;
+      top: -15%;
+      left: 0;
+      width: 100%;
+      height: 130%;
+    }
+
+    /* Text col — below image */
+    .dest-col--left {
+      order: 0;
+      flex: 1 1 auto;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+
+    .dest-content {
+      width: 100%;
+      height: 100%;
+      padding: 2rem 8vw 2.5rem;
+      justify-content: center;
+      background: var(--bg);
+    }
+
+    .dest-num {
+      position: static;
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+
+    .dest-title {
+      font-size: clamp(2rem, 10vw, 3.2rem);
+      margin-bottom: 0.6rem;
+    }
+
+    .dest-tags {
+      font-size: 0.62rem;
+      margin-bottom: 1.2rem;
+    }
+  }
+
+  /* ══ TABLET (769px – 1024px) ════════════════════════════════ */
+  @media (min-width: 769px) and (max-width: 1024px) {
+
+    .dest-header {
+      min-height: 40vh;
+      padding: 8vw 6vw 6vw;
+    }
+
+    .dest-header__title {
+      font-size: clamp(2.4rem, 5.5vw, 4rem);
+    }
+
+    /* Vertical stack — image on top, text below */
+    .dest-slide {
+      flex-direction: column;
+      align-items: stretch;
+      height: auto;
+    }
+
+    .dest-col--right {
+      order: -1;
+      flex: 0 0 52svh;
+      width: 100%;
+      height: 52svh;
+      position: relative;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .dest-img-wrap {
+      position: absolute;
+      top: -15%;
+      left: 0;
+      width: 100%;
+      height: 130%;
+    }
+
+    .dest-col--left {
+      order: 0;
+      flex: 1 1 auto;
+      width: 100%;
+    }
+
+    .dest-content {
+      width: 100%;
+      height: 100%;
+      padding: 2.5rem 7vw 3rem;
+      justify-content: center;
+    }
+
+    .dest-num {
+      position: static;
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+
+    .dest-title {
+      font-size: clamp(2.2rem, 6vw, 3.4rem);
+      margin-bottom: 0.75rem;
+    }
+
+    .dest-tags {
+      font-size: 0.6rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .dest-col--right { flex: 0 0 48svh; height: 48svh; }
+    .dest-title      { font-size: 2.1rem; }
+  }
+</style>
+
+<script>
+  // @ts-ignore
+  import { gsap } from 'gsap';
+  // @ts-ignore
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  let destCtx: any;
+  (window as any).__destInitialized = false;
+
+  function killDestScrollTriggers() {
+    ScrollTrigger.getAll().forEach((st: any) => {
+      const trig = st.vars?.trigger;
+      if (trig && (
+        (trig instanceof Element && (trig.closest('.dest-slide') || trig.closest('.dest-header'))) ||
+        (typeof trig === 'string' && (trig.includes('dest-') ))
+      )) {
+        st.kill();
+      }
+    });
+  }
+
+  function initDestinations() {
+    if ((window as any).__destInitialized) return;
+
+    killDestScrollTriggers();
+    destCtx?.revert();
+    destCtx = null;
+
+    const isMobile = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
+    const isStacked = window.matchMedia('(max-width: 1024px)').matches;
+
+    if (isMobile) {
+      gsap.set('.dest-header__label, .dest-header__cta', { opacity: 1, y: 0, clearProps: 'transform' });
+      gsap.set('.dest-h-inner', { y: 0, clearProps: 'transform' });
+      gsap.set('.dest-num', { opacity: 1, clearProps: 'transform' });
+      gsap.set('.dest-title__inner', { y: 0, clearProps: 'transform' });
+      gsap.set('.dest-tags, .dest-link', { x: 0, opacity: 1, clearProps: 'transform' });
+    }
+
+    // Clear inline transforms on all dest-img-wrap so parallax starts fresh
+    document.querySelectorAll<HTMLElement>('.dest-img-wrap').forEach(el => {
+      el.style.transform = '';
+      el.style.willChange = '';
+    });
+
+    destCtx = gsap.context(() => {
+      if (!isMobile) {
+        gsap.timeline({
+          scrollTrigger: { trigger: '.dest-header', start: 'top 72%' },
+        })
+        .fromTo('.dest-header__label',
+          { opacity: 0, y: 12 },
+          { opacity: 1, y: 0, duration: 0.9, ease: 'power3' }
+        )
+        .from('.dest-h-inner',
+          { y: 110, duration: 1.5, ease: 'power4', stagger: 0.1 },
+          0.1
+        )
+        .fromTo('.dest-header__cta',
+          { opacity: 0 },
+          { opacity: 1, duration: 0.9, ease: 'power3' },
+          0.5
+        );
+      }
+
+      document.querySelectorAll<HTMLElement>('.dest-slide').forEach((slide) => {
+        const imgWrap = slide.querySelector<HTMLElement>('.dest-img-wrap');
+        const content = slide.querySelector<HTMLElement>('.dest-content');
+        const num     = slide.querySelector<HTMLElement>('.dest-num');
+        const inners  = slide.querySelectorAll<HTMLElement>('.dest-title__inner');
+        const tags    = slide.querySelector<HTMLElement>('.dest-tags');
+        const link    = slide.querySelector<HTMLElement>('.dest-link');
+
+        if (!isMobile) {
+          gsap.set(num,    { opacity: 0 });
+          gsap.set(inners, { y: 0 });
+          gsap.set(tags,   { x: 25, opacity: 0 });
+          gsap.set(link,   { x: -20, opacity: 0 });
+        }
+
+        // ── Image parallax ──
+        if (imgWrap) {
+          const yAmount = isStacked ? 20 : 15;
+          const triggerEl = isStacked
+            ? (slide.querySelector<HTMLElement>('.dest-col--right') || slide)
+            : slide;
+
+          gsap.fromTo(imgWrap,
+            { yPercent: -yAmount },
+            {
+              yPercent: yAmount,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: triggerEl,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: true,
+                invalidateOnRefresh: true,
+              },
+            }
+          );
+        }
+
+        if (isMobile) return;
+
+        const entryTrigger = isStacked ? (content || slide) : slide;
+        const entryStart   = isStacked ? 'top 92%' : 'top 35%';
+
+        gsap.timeline({
+          scrollTrigger: { trigger: entryTrigger, start: entryStart },
+        })
+        .fromTo(num,
+          { opacity: 0 },
+          { opacity: 1, duration: 0.8, ease: 'power2' },
+          0
+        )
+        .from(inners,
+          { y: 120, duration: 1.8, ease: 'power4', stagger: 0.08 },
+          0.05
+        )
+        .fromTo(tags,
+          { x: 25, opacity: 0 },
+          { x: 0, opacity: 1, duration: 1.2, ease: 'power4' },
+          0.35
+        )
+        .fromTo(link,
+          { x: -20, opacity: 0 },
+          { x: 0, opacity: 1, duration: 1.0, ease: 'power4' },
+          0.45
+        );
+      });
+
+      ScrollTrigger.refresh();
+    });
+
+    (window as any).__destInitialized = true;
+  }
+
+  document.addEventListener('astro:before-preparation', () => {
+    (window as any).__destInitialized = false;
+    killDestScrollTriggers();
+    ScrollTrigger.clearScrollMemory?.();
+    destCtx?.revert();
+    destCtx = null;
+  });
+
+  document.addEventListener('astro:page-load', () => {
+    (window as any).__destInitialized = false;
+    if (document.querySelector('.dest-slide')) {
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+        initDestinations();
+      });
+    }
+  });
+
+  if (document.readyState !== 'loading') {
+    if (document.querySelector('.dest-slide') && !(window as any).__destInitialized) {
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+        initDestinations();
+      });
+    }
+  }
+</script>

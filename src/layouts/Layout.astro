@@ -1,0 +1,228 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import Navigation from '../components/Navigation.astro';
+import EnquiryModal from '../components/EnquiryModal.astro';
+import PageTransition from '../components/PageTransition.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+const { title = 'Winds of Sinai' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-visual, viewport-fit=cover" />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=IBM+Plex+Mono:wght@400&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=IBM+Plex+Mono:wght@400&display=swap"
+    />
+    <script is:inline>
+      // Prevent FOUT — hide hero text until fonts are ready
+      document.documentElement.classList.add('fonts-loading');
+
+      // Hide preloader instantly if already shown this session
+      if (sessionStorage.getItem('pl-shown')) {
+        var pl = document.getElementById('preloader');
+        if (pl) { pl.style.opacity = '0'; pl.style.pointerEvents = 'none'; pl.style.display = 'none'; }
+      } else {
+        document.body.style.overflow = 'hidden';
+      }
+
+      function setVh() {
+        // Use the scroll-wrapper height if available, otherwise innerHeight
+        var wrapper = document.getElementById('scroll-wrapper');
+        var h = wrapper ? wrapper.clientHeight : window.innerHeight;
+        var vh = h * 0.01;
+        document.documentElement.style.setProperty('--vh', vh + 'px');
+      }
+
+      // Set once on load — do NOT update on resize or scroll.
+      setVh();
+      document.addEventListener('astro:page-load', setVh);
+
+      document.fonts.ready.then(() => {
+        document.documentElement.classList.remove('fonts-loading');
+        document.documentElement.classList.add('fonts-loaded');
+      });
+    </script>
+    <script is:inline>
+      if (!document.documentElement.dataset.scrollSaverBound) {
+        document.documentElement.dataset.scrollSaverBound = '1';
+
+        // Save scroll position on every navigation
+        document.addEventListener('astro:before-preparation', function () {
+          var sw = document.getElementById('scroll-wrapper');
+          if (!sw) return;
+          try {
+            sessionStorage.setItem(
+              'sw-scroll:' + location.pathname,
+              sw.scrollTop
+            );
+          } catch(e) {}
+        });
+
+        // Restore position after bfcache restore
+        window.addEventListener('pageshow', function (e) {
+          if (!e.persisted) return;
+          var sw = document.getElementById('scroll-wrapper');
+          if (!sw) return;
+          try {
+            var saved = sessionStorage.getItem('sw-scroll:' + location.pathname);
+            if (saved !== null) {
+              requestAnimationFrame(function () {
+                requestAnimationFrame(function () {
+                  sw.scrollTop = parseInt(saved, 10);
+                  if (window.lenis) {
+                    window.lenis.scrollTo(parseInt(saved, 10), { immediate: true });
+                    window.lenis.start();
+                  }
+                });
+              });
+            }
+          } catch(e) {}
+        });
+
+        // Restore after SPA back navigation
+        document.addEventListener('astro:page-load', function () {
+          var sw = document.getElementById('scroll-wrapper');
+          if (!sw) return;
+          if (window.navigation && window.navigation.currentEntry) {
+            var type = window.navigation.currentEntry.navigationType;
+            if (type === 'traverse') {
+              try {
+                var saved = sessionStorage.getItem('sw-scroll:' + location.pathname);
+                if (saved !== null) {
+                  setTimeout(function () {
+                    sw.scrollTop = parseInt(saved, 10);
+                    if (window.lenis) {
+                      window.lenis.scrollTo(parseInt(saved, 10), { immediate: true });
+                    }
+                  }, 900);
+                }
+              } catch(e) {}
+            }
+          }
+        });
+      }
+    </script>
+    <ClientRouter fallback="none" />
+  </head>
+  <body class="bg-[#FAF8F3] text-zinc-900 antialiased">
+    <!-- Liquid Glass SVG Filter -->
+    <svg class="liquid-glass-defs" aria-hidden="true">
+      <defs>
+        <filter id="liquid-glass" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+          <feTurbulence
+            id="liquid-turb"
+            type="fractalNoise"
+            baseFrequency="0.012 0.014"
+            numOctaves="3"
+            seed="2"
+            result="noise"
+          />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="noise"
+            scale="18"
+            xChannelSelector="R"
+            yChannelSelector="G"
+          />
+        </filter>
+        <filter id="liquid-glass-sm" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+          <feTurbulence
+            id="liquid-turb-sm"
+            type="fractalNoise"
+            baseFrequency="0.018 0.02"
+            numOctaves="2"
+            seed="5"
+            result="noise"
+          />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="noise"
+            scale="10"
+            xChannelSelector="R"
+            yChannelSelector="G"
+          />
+        </filter>
+      </defs>
+    </svg>
+    <PageTransition />
+    <Navigation />
+    <EnquiryModal />
+    <!-- Preloader — first hard load only -->
+    <div id="preloader" aria-hidden="true">
+      <span id="preloader-text">Winds Of Sinai</span>
+    </div>
+    <Footer />
+    <!-- Grid Overlay — architectural column lines -->
+    <div class="grid-overlay" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div id="scroll-wrapper">
+      <div id="scroll-content">
+        <slot />
+      </div>
+      <div id="footer-spacer"></div>
+    </div>
+    <script>
+      import '../scripts/main.js';
+    </script>
+    <script>
+      // Liquid Glass — animate turbulence for a living, flowing distortion
+      function initLiquidGlass() {
+        const turb = document.getElementById('liquid-turb') as SVGElement | null;
+        const turbSm = document.getElementById('liquid-turb-sm') as SVGElement | null;
+        if (!turb) return;
+
+        let frame = 0;
+        let running = false;
+
+        function animate() {
+          frame += 0.004;
+          const bx = 0.012 + Math.sin(frame) * 0.003;
+          const by = 0.014 + Math.cos(frame * 0.7) * 0.003;
+          turb!.setAttribute('baseFrequency', `${bx.toFixed(4)} ${by.toFixed(4)}`);
+          if (turbSm) {
+            const sx = 0.018 + Math.sin(frame * 1.2) * 0.004;
+            const sy = 0.02 + Math.cos(frame * 0.9) * 0.004;
+            turbSm.setAttribute('baseFrequency', `${sx.toFixed(4)} ${sy.toFixed(4)}`);
+          }
+          if (running) requestAnimationFrame(animate);
+        }
+
+        function startLoop() {
+          if (!running) { running = true; animate(); }
+        }
+        function stopLoop() {
+          running = false;
+        }
+
+        document.addEventListener('mouseenter', (e) => {
+          const t = e.target as HTMLElement | null;
+          if (t?.closest?.('[data-liquid-glass]')) startLoop();
+        }, true);
+        document.addEventListener('mouseleave', (e) => {
+          const t = e.target as HTMLElement | null;
+          if (t?.closest?.('[data-liquid-glass]')) {
+            setTimeout(() => {
+              if (!document.querySelector('[data-liquid-glass]:hover')) stopLoop();
+            }, 50);
+          }
+        }, true);
+      }
+
+      if (document.readyState !== 'loading') initLiquidGlass();
+      document.addEventListener('astro:page-load', initLiquidGlass);
+    </script>
+  </body>
+</html>

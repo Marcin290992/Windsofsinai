@@ -1,0 +1,611 @@
+---
+const panels = [
+  {
+    num: "01",
+    title: "Nurkowanie\nw Błękitnej Dziurze",
+    desc: "Jedno z najsłynniejszych miejsc nurkowych na świecie — Blue Hole w Dahab. Ściana koralowa opada na głębokość 100 metrów.",
+    img: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80",
+    accent: "#3B8DBD",
+  },
+  {
+    num: "02",
+    title: "Wschód słońca\nna Górze Mojżesza",
+    desc: "Nocna wędrówka na szczyt 2285 m n.p.m., żeby zobaczyć jak pustynia budzi się w złocie i fiolecie.",
+    img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80",
+    accent: "#C8A96E",
+  },
+  {
+    num: "03",
+    title: "Kolacja\npod gwiazdami",
+    desc: "Beduińska muzyka, ogień, herbata i niebo bez jednego światła sztucznego. Pustynna noc, jaka powinna być.",
+    img: "https://images.unsplash.com/photo-1542401886-65d6c61db217?auto=format&fit=crop&w=1200&q=80",
+    accent: "#D4A76A",
+  },
+  {
+    num: "04",
+    title: "Safari\nna wielbłądach",
+    desc: "Wielogodzinna wędrówka przez kaniony Synaju — w ciszy, z beduińskim przewodnikiem i widokami na Zatokę Akaba.",
+    img: "https://images.unsplash.com/photo-1549299101-45fee6feaaf7?auto=format&fit=crop&w=1200&q=80",
+    accent: "#B8956A",
+  },
+  {
+    num: "05",
+    title: "Snorkeling\nna rafie koralowej",
+    desc: "Ras Mohammed — jeden z najbogatszych ekosystemów morskich na świecie, tuż przy brzegu.",
+    img: "https://images.unsplash.com/photo-1559494007-9f5847c49d94?auto=format&fit=crop&w=1200&q=80",
+    accent: "#2D9E8F",
+  },
+];
+---
+
+<section class="hz-section" data-hz-section>
+  <div class="hz-header">
+    <p class="hz-header__label">Przeżyj to</p>
+    <h2 class="hz-header__title">
+      <span class="hz-h-line"><span class="hz-h-inner">Chwile,</span></span>
+      <span class="hz-h-line"><span class="hz-h-inner">które zostają</span></span>
+    </h2>
+  </div>
+
+  <div class="hz-track-wrapper" data-hz-wrapper>
+    <div class="hz-track" data-hz-track>
+
+      <article class="hz-panel hz-panel--text" data-hz-panel>
+        <div class="hz-text__wrap">
+          <span class="hz-text__label">O podróżach</span>
+          <h3 class="hz-text__heading">Podróż to nie odległość.<br/>To zmiana perspektywy.</h3>
+          <p class="hz-text__body">Są chwile, które nie tylko się przeżywa — one zmieniają sposób, w jaki patrzymy na świat. Półwysep Synaj jest jednym z takich miejsc. Między pustynnymi kanionami, turkusowym morzem i gwiazdami tak blisko, że chce się je dotknąć.</p>
+          <div class="hz-scroll-indicator" aria-hidden="true">
+            <div class="hz-scroll-indicator__track">
+              <div class="hz-scroll-indicator__dot"></div>
+              <div class="hz-scroll-indicator__line"></div>
+            </div>
+            <span class="hz-scroll-indicator__label">Przewiń w prawo</span>
+          </div>
+        </div>
+      </article>
+
+      {panels.map((p, i) => (
+        <article class="hz-panel" data-hz-panel>
+          <div class="hz-panel__img-wrap">
+            <img
+              src={p.img}
+              alt={p.title.replace('\n', ' ')}
+              class="hz-panel__img"
+              loading="lazy"
+              decoding="async"
+            />
+            <div class="hz-panel__img-overlay"></div>
+          </div>
+          <div class="hz-panel__content">
+            <span class="hz-panel__num">{p.num}</span>
+            <h3 class="hz-panel__title" set:html={p.title.replace('\n', '<br/>')} />
+            <p class="hz-panel__desc">{p.desc}</p>
+          </div>
+        </article>
+      ))}
+
+      <article class="hz-panel hz-panel--text hz-panel--end" data-hz-panel>
+        <div class="hz-text__wrap">
+          <h3 class="hz-text__heading">Synaj czeka.<br/>Na Ciebie.</h3>
+          <p class="hz-text__body">Pustynia, morze, góry i gwiazdy — wszystko w jednym miejscu, na skraju dwóch kontynentów. Pozwól, żeby ta historia stała się Twoją.</p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+
+  <div class="hz-progress" data-hz-progress>
+    <div class="hz-progress__bar"></div>
+  </div>
+</section>
+
+<style>
+  .hz-section {
+    background: #0A0A0A;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hz-header {
+    background: #FAF8F3;
+    padding: clamp(6rem, 10vw, 10rem) clamp(2rem, 6vw, 6.5rem) clamp(3rem, 6vw, 5rem);
+  }
+
+  .hz-header__label {
+    font-family: var(--f-mono);
+    font-size: 0.55rem;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--c-gold-dim, #a48a5a);
+    margin: 0 0 1.5rem;
+  }
+
+  .hz-header__title {
+    font-family: 'Cinzel Decorative', Georgia, serif;
+    font-size: clamp(2.4rem, 5.5vw, 5rem);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: 0.02em;
+    color: #111;
+    margin: 0;
+  }
+
+  .hz-h-line  { display: block; overflow: hidden; }
+  .hz-h-inner { display: block; }
+
+  .hz-track-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: calc(var(--vh, 1vh) * 100);
+  }
+
+  .hz-track {
+    display: flex;
+    gap: 0;
+    height: 100%;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .hz-panel {
+    flex: 0 0 85vw;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    padding: clamp(2rem, 5vw, 5rem);
+  }
+
+  .hz-panel__img-wrap {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .hz-panel__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .hz-panel__img-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0,0,0,0.75) 0%,
+      rgba(0,0,0,0.25) 40%,
+      rgba(0,0,0,0.05) 100%
+    );
+  }
+
+  .hz-panel__content {
+    position: relative;
+    z-index: 2;
+    max-width: 28rem;
+    overflow: visible;
+  }
+
+  .hz-panel__num {
+    font-family: var(--f-mono);
+    font-size: 0.5rem;
+    letter-spacing: 0.28em;
+    color: rgba(255, 255, 255, 0.3);
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .hz-panel__title {
+    font-family: 'Cinzel Decorative', Georgia, serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    color: #FAF8F3;
+    margin: 0 0 1rem;
+  }
+
+  .hz-panel__desc {
+    font-family: var(--f-sans, Georgia, serif);
+    font-size: clamp(0.8rem, 1.1vw, 0.95rem);
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+    max-width: 22rem;
+  }
+
+  .hz-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.08);
+    z-index: 5;
+  }
+
+  .hz-progress__bar {
+    height: 100%;
+    width: 0%;
+    background: var(--c-gold, #C8A96E);
+    will-change: width;
+  }
+
+  .hz-panel--text {
+    background: #FAF8F3;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(3rem, 6vw, 6rem);
+  }
+
+  .hz-text__wrap { max-width: 32rem; }
+  .hz-panel--end .hz-text__wrap { text-align: center; }
+
+  .hz-text__label {
+    font-family: var(--f-mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--c-gold-dim, #7D6945);
+    display: block;
+    margin-bottom: 2rem;
+  }
+
+  .hz-text__heading {
+    font-family: 'Cinzel Decorative', Georgia, serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+    color: #111;
+    margin: 0 0 1.5rem;
+  }
+
+  .hz-text__body {
+    font-family: var(--f-sans, Georgia, serif);
+    font-size: clamp(0.85rem, 1.1vw, 1rem);
+    line-height: 1.75;
+    color: var(--c-muted, rgba(17,17,17,0.55));
+    margin: 0;
+  }
+
+  .hz-scroll-indicator { display: none; }
+
+  @media (max-width: 1024px) {
+    .hz-track-wrapper {
+      height: auto;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .hz-track-wrapper::-webkit-scrollbar { display: none; }
+
+    .hz-track {
+      flex-direction: row;
+      height: 75vh;
+      height: calc(var(--vh, 1vh) * 75);
+      will-change: auto;
+    }
+
+    .hz-panel {
+      flex: 0 0 92vw;
+      height: 100%;
+      scroll-snap-align: center;
+      padding: 0;
+      align-items: stretch;
+      border-radius: 0;
+    }
+
+    .hz-panel__img-wrap { inset: 0; }
+
+    .hz-panel__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      will-change: auto;
+      backface-visibility: visible;
+    }
+
+    .hz-panel__content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom, 0px));
+      max-width: none;
+      overflow: visible;
+    }
+
+    .hz-panel__img-overlay {
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.85) 0%,
+        rgba(0,0,0,0.35) 45%,
+        rgba(0,0,0,0.05) 100%
+      );
+    }
+
+    .hz-panel__title  { font-size: clamp(1.15rem, 5vw, 1.7rem); }
+    .hz-panel__desc   { font-size: clamp(0.72rem, 2.2vw, 0.85rem); line-height: 1.55; }
+    .hz-panel__num    { margin-bottom: 0.6rem; }
+    .hz-progress      { display: none; }
+
+    .hz-header {
+      padding: clamp(4rem, 8vw, 6rem) clamp(1.5rem, 4vw, 2rem) clamp(1.5rem, 3vw, 2rem);
+    }
+
+    .hz-header__label { opacity: 1 !important; transform: none !important; }
+    .hz-h-inner       { transform: none !important; }
+
+    .hz-panel--text {
+      flex: 0 0 92vw;
+      height: 100%;
+      padding: clamp(2rem, 6vw, 3.5rem) clamp(1.5rem, 4vw, 2rem);
+      scroll-snap-align: center;
+    }
+
+    .hz-text__heading { font-size: clamp(1.3rem, 5vw, 1.8rem); }
+    .hz-text__body    { font-size: clamp(0.78rem, 2.5vw, 0.88rem); }
+
+    .hz-scroll-indicator {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-top: 2.5rem;
+    }
+
+    .hz-scroll-indicator__track {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      width: 4.5rem;
+      height: 2px;
+      position: relative;
+    }
+
+    .hz-scroll-indicator__line {
+      flex: 1;
+      height: 1px;
+      background: var(--c-gold-dim, #7D6945);
+      opacity: 0.3;
+      position: relative;
+    }
+
+    .hz-scroll-indicator__line::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      height: 100%;
+      width: 100%;
+      background: var(--c-gold, #C8A96E);
+      transform-origin: left;
+      animation: hz-line-sweep 2.4s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+    }
+
+    .hz-scroll-indicator__dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--c-gold, #C8A96E);
+      flex-shrink: 0;
+      animation: hz-dot-pulse 2.4s ease-in-out infinite;
+    }
+
+    .hz-scroll-indicator__label {
+      font-family: var(--f-mono);
+      font-size: 0.5rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--c-gold-dim, #7D6945);
+      opacity: 0.7;
+    }
+
+    @keyframes hz-line-sweep {
+      0%   { transform: scaleX(0); opacity: 0; }
+      30%  { transform: scaleX(1); opacity: 1; }
+      60%  { transform: scaleX(1); opacity: 1; }
+      100% { transform: scaleX(0); opacity: 0; transform-origin: right; }
+    }
+
+    @keyframes hz-dot-pulse {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      30%      { opacity: 1;   transform: scale(1.3); }
+      60%      { opacity: 1;   transform: scale(1); }
+    }
+  }
+</style>
+
+<script>
+  // @ts-nocheck
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  let hzCtx = null;
+
+  // Jedyna funkcja cleanup — usuwa silentKill/silentCleanupHz które powodowały błąd
+  function cleanupHz() {
+    if (!hzCtx) return;
+    hzCtx.revert();
+    hzCtx = null;
+  }
+
+  function initHorizontalScroll() {
+    cleanupHz();
+
+    const wrapper = document.querySelector('[data-hz-wrapper]');
+    const track = document.querySelector('[data-hz-track]');
+    const panels = document.querySelectorAll('[data-hz-panel]');
+    const progressBar = document.querySelector('.hz-progress__bar');
+    const isMobile = window.matchMedia('(max-width: 1024px)').matches;
+
+    if (!wrapper || !track || !panels.length) return;
+
+    gsap.set('.hz-header__label, .hz-h-inner', { clearProps: 'all' });
+    gsap.set(track, { clearProps: 'all' });
+    panels.forEach(p => {
+      const c = p.querySelector('.hz-panel__content');
+      if (c) gsap.set(c.children, { clearProps: 'all' });
+      const img = p.querySelector('.hz-panel__img');
+      if (img) gsap.set(img, { clearProps: 'all' });
+    });
+
+    if (isMobile) {
+      hzCtx = { revert() {} };
+      return;
+    }
+
+    const headerTl = gsap.timeline({
+      scrollTrigger: { trigger: '.hz-header', start: 'top 85%', once: true },
+    })
+    .fromTo('.hz-header__label',
+      { opacity: 0, y: 12 },
+      { opacity: 1, y: 0, duration: 0.9, ease: 'power3' }
+    )
+    .fromTo('.hz-h-inner',
+      { y: 110 },
+      { y: 0, duration: 1.5, ease: 'power4', stagger: 0.1 },
+      0.1
+    );
+
+    const panelWidth = panels[0].offsetWidth;
+    const totalWidth = panelWidth * panels.length;
+    const scrollDistance = totalWidth - window.innerWidth;
+
+    const hzTween = gsap.to(track, {
+      x: -scrollDistance,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: wrapper,
+        pin: true,
+        scrub: 1.5,
+        start: 'top top',
+        end: () => `+=${scrollDistance}`,
+        pinSpacing: true,
+        onUpdate: (self) => {
+          // Kluczowy fix: zapisuj scrollTop podczas pina — czyta to PageTransition
+          const sw = document.getElementById('scroll-wrapper');
+          if (sw) window.__hzScrollTop = sw.scrollTop;
+
+          if (progressBar) {
+            progressBar.style.width = `${(self.progress * 100).toFixed(1)}%`;
+          }
+        },
+        onLeave: () => {
+          // Pin zwolniony do przodu — czyść
+          window.__hzScrollTop = undefined;
+        },
+        onLeaveBack: () => {
+          // Pin zwolniony do tyłu — czyść
+          window.__hzScrollTop = undefined;
+        },
+      },
+    });
+
+    const childSTs = [];
+
+    panels.forEach((panel) => {
+      const img = panel.querySelector('.hz-panel__img');
+      if (!img) return;
+      const tw = gsap.fromTo(img,
+        { xPercent: -5 },
+        {
+          xPercent: 5,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: panel,
+            containerAnimation: hzTween,
+            start: 'left right',
+            end: 'right left',
+            scrub: true,
+          },
+        }
+      );
+      if (tw.scrollTrigger) childSTs.push(tw.scrollTrigger);
+    });
+
+    panels.forEach((panel) => {
+      if (panel.classList.contains('hz-panel--text')) return;
+      const content = panel.querySelector('.hz-panel__content');
+      if (!content) return;
+      const tw = gsap.fromTo(content.children,
+        { autoAlpha: 0, y: 30 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power2',
+          stagger: 0.08,
+          scrollTrigger: {
+            trigger: panel,
+            containerAnimation: hzTween,
+            start: 'left 75%',
+            end: 'left 25%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      );
+      if (tw.scrollTrigger) childSTs.push(tw.scrollTrigger);
+    });
+
+    hzCtx = {
+      revert() {
+        window.__hzScrollTop = undefined;
+
+        childSTs.forEach(st => st.kill());
+        headerTl.scrollTrigger?.kill();
+        headerTl.kill();
+        hzTween.scrollTrigger?.kill();
+        hzTween.kill();
+
+        if (progressBar) progressBar.style.width = '0%';
+
+        gsap.set('.hz-header__label, .hz-h-inner', { clearProps: 'all' });
+        gsap.set(track, { clearProps: 'all' });
+        panels.forEach(p => {
+          const c = p.querySelector('.hz-panel__content');
+          if (c) gsap.set(c.children, { clearProps: 'all' });
+          const img = p.querySelector('.hz-panel__img');
+          if (img) gsap.set(img, { clearProps: 'all' });
+        });
+      }
+    };
+
+    ScrollTrigger.refresh();
+  }
+
+  document.addEventListener('astro:before-preparation', () => {
+    // Zapisz scrollTop raz jeszcze przed zniszczeniem pina
+    const sw = document.getElementById('scroll-wrapper');
+    if (sw && hzCtx && window.__hzScrollTop === undefined) {
+      window.__hzScrollTop = sw.scrollTop;
+    }
+    cleanupHz();
+  });
+
+  document.addEventListener('astro:page-load', () => {
+    if (!document.querySelector('[data-hz-section]')) {
+      cleanupHz();
+      return;
+    }
+    requestAnimationFrame(() => initHorizontalScroll());
+  });
+
+  if (document.readyState !== 'loading') {
+    if (document.querySelector('[data-hz-section]')) initHorizontalScroll();
+  }
+</script>

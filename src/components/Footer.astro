@@ -1,0 +1,364 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+
+  <!-- Large reveal wordmark — revealed first as content scrolls away -->
+  <div class="site-footer__wordmark">
+    <span class="site-footer__wordmark-text">Winds of Sinai</span>
+  </div>
+
+  <div class="site-footer__inner">
+
+    <!-- Top: gold hairline -->
+    <div class="site-footer__rule"></div>
+
+    <!-- Main grid -->
+    <div class="site-footer__grid">
+
+      <!-- Left: brand + manifesto -->
+      <div class="site-footer__brand">
+        <a href="/" class="site-footer__logo">Winds of Sinai</a>
+        <p class="site-footer__tagline">
+          Cinematic journeys<br>through&nbsp;the&nbsp;Sinai&nbsp;Peninsula.
+        </p>
+      </div>
+
+      <!-- Center: navigation -->
+      <nav class="site-footer__nav" aria-label="Footer navigation">
+        <span class="site-footer__nav-label">Navigation</span>
+        <ul class="site-footer__links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/work">Work</a></li>
+          <li><a href="/studio">Studio</a></li>
+          <li><a href="/services">Services</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Right: contact + socials -->
+      <div class="site-footer__contact">
+        <span class="site-footer__contact-label">Connect</span>
+        <a href="mailto:hello@windsofsinai.com" class="site-footer__email">hello@windsofsinai.com</a>
+        <div class="site-footer__socials">
+          <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
+          <a href="https://behance.net" target="_blank" rel="noopener" aria-label="Behance">Behance</a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="site-footer__bottom">
+      <span>&copy; {year} Winds of Sinai. All rights reserved.</span>
+      <span class="site-footer__bottom-location">Warsaw · Dahab · Sharm el-Sheikh</span>
+    </div>
+
+  </div>
+
+</footer>
+
+<style>
+  .site-footer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    background: #FAF8F3;
+    color: var(--c-muted, rgba(17, 17, 17, 0.45));
+    padding: 0 clamp(2rem, 6vw, 6.5rem);
+    display: flex;
+    flex-direction: column;
+    pointer-events: none;
+  }
+
+  .site-footer a,
+  .site-footer button {
+    pointer-events: all;
+  }
+
+  /* Large wordmark */
+  .site-footer__wordmark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(4rem, 10vw, 8rem) 0 clamp(3rem, 6vw, 5rem);
+    overflow: hidden;
+  }
+
+  .site-footer__wordmark-text {
+    font-family: var(--f-heading, 'Cinzel Decorative', Georgia, serif);
+    font-size: clamp(3rem, 10vw, 9rem);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--c-border, rgba(17, 17, 17, 0.12));
+    white-space: nowrap;
+    line-height: 1;
+    text-align: center;
+    user-select: none;
+  }
+
+  .site-footer__inner {
+    max-width: 1440px;
+    margin: auto auto 0;
+  }
+
+  /* Gold hairline */
+  .site-footer__rule {
+    height: 1px;
+    background: linear-gradient(90deg, var(--c-gold, #C8A96E) 0%, transparent 100%);
+    opacity: 0.35;
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+  }
+
+  /* Grid */
+  .site-footer__grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+  }
+
+  /* Brand */
+  .site-footer__logo {
+    font-family: var(--f-heading, 'Cinzel Decorative', Georgia, serif);
+    font-size: clamp(1.1rem, 1.8vw, 1.45rem);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--c-white, #111);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 1.2rem;
+    transition: opacity 0.3s ease;
+  }
+
+  .site-footer__logo:hover,
+  .site-footer__logo.is-footer-hover { opacity: 0.7; }
+
+  .site-footer__tagline {
+    font-family: var(--f-display, 'Cormorant Garamond', Georgia, serif);
+    font-size: clamp(0.95rem, 1.3vw, 1.1rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.55;
+    color: var(--c-muted, rgba(17, 17, 17, 0.45));
+    margin: 0;
+  }
+
+  /* Nav */
+  .site-footer__nav-label,
+  .site-footer__contact-label {
+    font-family: var(--f-mono, 'IBM Plex Mono', monospace);
+    font-size: 0.5rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--c-gold-dim, #7D6945);
+    display: block;
+    margin-bottom: 1.4rem;
+  }
+
+  .site-footer__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .site-footer__links a {
+    font-family: var(--f-mono, 'IBM Plex Mono', monospace);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-muted, rgba(17, 17, 17, 0.45));
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .site-footer__links a:hover,
+  .site-footer__links a.is-footer-hover { color: var(--c-gold, #C8A96E); }
+
+  /* Contact */
+  .site-footer__email {
+    display: block;
+    font-family: var(--f-mono, 'IBM Plex Mono', monospace);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    color: var(--c-muted, rgba(17, 17, 17, 0.45));
+    text-decoration: none;
+    margin-bottom: 1.4rem;
+    transition: color 0.3s ease;
+  }
+
+  .site-footer__email:hover,
+  .site-footer__email.is-footer-hover { color: var(--c-white, #111); }
+
+  .site-footer__socials {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .site-footer__socials a {
+    font-family: var(--f-mono, 'IBM Plex Mono', monospace);
+    font-size: 0.55rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--c-muted, rgba(17, 17, 17, 0.45));
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .site-footer__socials a:hover,
+  .site-footer__socials a.is-footer-hover { color: var(--c-gold, #C8A96E); }
+
+  /* Bottom */
+  .site-footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--c-border, rgba(17, 17, 17, 0.12));
+    font-family: var(--f-mono, 'IBM Plex Mono', monospace);
+    font-size: 0.48rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-muted, rgba(17, 17, 17, 0.45));
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .site-footer {
+      padding: 0 clamp(1.5rem, 6vw, 2.5rem);
+    }
+
+    .site-footer__grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .site-footer__tagline { display: none; }
+
+    .site-footer__links {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.5rem;
+    }
+
+    .site-footer__socials {
+      flex-direction: row;
+      gap: 1.2rem;
+    }
+
+    .site-footer__bottom-location { display: none; }
+
+    .site-footer__wordmark {
+      padding: clamp(2.5rem, 8vw, 4rem) 0 clamp(2rem, 4vw, 3rem);
+      flex: 1;
+    }
+
+    .site-footer__wordmark-text {
+      white-space: normal;
+      text-align: center;
+    }
+  }
+</style>
+
+<script>
+  // @ts-nocheck
+  function syncFooterSpacer() {
+    const spacer = document.getElementById('footer-spacer');
+    if (spacer) {
+      spacer.style.height = '100vh';
+    }
+  }
+
+  let footerCleanup = null;
+
+  function setupFooterInteraction() {
+    if (footerCleanup) footerCleanup();
+
+    const sw = document.getElementById('scroll-wrapper');
+    const spacer = document.getElementById('footer-spacer');
+    if (!sw || !spacer) return;
+
+    let lastHovered = null;
+
+    function getFooterEl(x, y) {
+      const origPE = sw.style.pointerEvents;
+      sw.style.pointerEvents = 'none';
+      const el = document.elementFromPoint(x, y);
+      sw.style.pointerEvents = origPE;
+      return el;
+    }
+
+    function isInSpacerArea(e) {
+      const rect = spacer.getBoundingClientRect();
+      return e.clientY >= rect.top && e.clientY <= rect.bottom;
+    }
+
+    function onClick(e) {
+      if (!isInSpacerArea(e)) return;
+      const below = getFooterEl(e.clientX, e.clientY);
+      if (!below) return;
+      const link = below.closest('a') || below.closest('button');
+      if (link && link.closest('.site-footer')) {
+        e.preventDefault();
+        e.stopPropagation();
+        link.click();
+      }
+    }
+
+    function onMove(e) {
+      if (!isInSpacerArea(e)) {
+        if (lastHovered) {
+          lastHovered.classList.remove('is-footer-hover');
+          sw.style.cursor = '';
+          lastHovered = null;
+        }
+        return;
+      }
+      const below = getFooterEl(e.clientX, e.clientY);
+      const link = below ? (below.closest('a') || below.closest('button')) : null;
+      const footerLink = link && link.closest('.site-footer') ? link : null;
+
+      if (footerLink !== lastHovered) {
+        if (lastHovered) lastHovered.classList.remove('is-footer-hover');
+        if (footerLink) footerLink.classList.add('is-footer-hover');
+        lastHovered = footerLink;
+      }
+      sw.style.cursor = footerLink ? 'pointer' : '';
+    }
+
+    function onLeave() {
+      if (lastHovered) {
+        lastHovered.classList.remove('is-footer-hover');
+        lastHovered = null;
+      }
+      sw.style.cursor = '';
+    }
+
+    sw.addEventListener('click', onClick);
+    sw.addEventListener('mousemove', onMove);
+    sw.addEventListener('mouseleave', onLeave);
+
+    footerCleanup = () => {
+      sw.removeEventListener('click', onClick);
+      sw.removeEventListener('mousemove', onMove);
+      sw.removeEventListener('mouseleave', onLeave);
+      if (lastHovered) lastHovered.classList.remove('is-footer-hover');
+      sw.style.cursor = '';
+    };
+  }
+
+  syncFooterSpacer();
+  setupFooterInteraction();
+  document.addEventListener('astro:page-load', () => {
+    syncFooterSpacer();
+    setupFooterInteraction();
+  });
+</script>

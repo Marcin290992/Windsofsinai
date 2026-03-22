@@ -1,0 +1,261 @@
+@import "tailwindcss";
+
+/* ── Preloader ───────────────────────────────────────────────────── */
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #FAF8F3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  pointer-events: all;
+}
+
+#preloader-text {
+  font-family: 'Cinzel Decorative', Georgia, serif;
+  font-size: clamp(2.25rem, 7.5vw, 6.75rem);
+  font-weight: 400;
+  color: #0A0A0A;
+  letter-spacing: 0.08em;
+  text-align: center;
+  padding: 0 clamp(1rem, 4vw, 3rem);
+  opacity: 0;
+}
+
+html {
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+}
+
+html, body {
+	overflow: hidden;
+	height: 100%;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+#scroll-wrapper {
+	position: relative;
+	z-index: 1;
+	height: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	-webkit-overflow-scrolling: touch;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+#scroll-wrapper::-webkit-scrollbar {
+	display: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+	display: none;
+}
+
+/* ── Sticky Reveal Footer ───────────────────────────────────── */
+#scroll-content {
+	background: #FAF8F3;
+}
+
+#footer-spacer {
+	height: 100vh;
+}
+
+/* ── Grid Overlay ────────────────────────────────────────────── */
+.grid-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 9990;
+	pointer-events: none;
+	display: flex;
+	justify-content: center;
+	padding: 0 clamp(1.5rem, 6vw, 6.5rem);
+}
+
+.grid-overlay > span {
+	flex: 1;
+	border-right: 1px solid rgba(17, 17, 17, 0.045);
+}
+
+.grid-overlay > span:first-child {
+	border-left: 1px solid rgba(17, 17, 17, 0.045);
+}
+
+.grid-overlay {
+	mix-blend-mode: normal;
+}
+
+/* Hide on mobile for cleaner look */
+@media (max-width: 768px) {
+	.grid-overlay {
+		display: none;
+	}
+}
+
+/* Mobile scroll lock — used by Packages component */
+html.pkg-scroll-locked #scroll-wrapper {
+	overflow: hidden !important;
+}
+
+/* ── Liquid Glass SVG Filter ────────────────────────────────────── */
+.liquid-glass-defs {
+	position: absolute;
+	width: 0;
+	height: 0;
+	overflow: hidden;
+	pointer-events: none;
+}
+
+[data-liquid-glass] {
+	transition: filter 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+	will-change: filter;
+}
+
+[data-liquid-glass]:hover {
+	filter: url(#liquid-glass);
+}
+
+[data-liquid-glass="sm"]:hover {
+	filter: url(#liquid-glass-sm);
+}
+
+@media (max-width: 768px) {
+	[data-liquid-glass]:hover,
+	[data-liquid-glass="sm"]:hover {
+		filter: none;
+	}
+}
+
+/* ── Enquiry Modal ───────────────────────────────────────────────── */
+.dp-enq {
+	position: fixed; inset: 0; z-index: 10030;
+	display: flex; align-items: center; justify-content: center;
+	opacity: 0; pointer-events: none;
+	transition: opacity .35s ease;
+}
+.dp-enq.is-open { opacity: 1; pointer-events: auto; }
+.dp-enq__backdrop {
+	position: absolute; inset: 0;
+	background: rgba(6,6,6,.7);
+	backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+}
+.dp-enq__panel {
+	position: relative; z-index: 1;
+	width: 100%; max-width: 32rem;
+	background: #0e0e0e;
+	border: 1px solid rgba(200,169,110,.15);
+	border-radius: 6px;
+	padding: clamp(2rem,5vw,3rem) clamp(1.5rem,4vw,2.5rem) clamp(1.2rem,3vw,1.6rem);
+	box-shadow: 0 16px 64px rgba(0,0,0,.5);
+	transform: translateY(18px) scale(.97);
+	transition: transform .4s cubic-bezier(.22,1,.36,1);
+	overflow: hidden;
+}
+.dp-enq.is-open .dp-enq__panel { transform: translateY(0) scale(1); }
+.dp-enq__close {
+	position: absolute; top: 1rem; right: 1rem;
+	border: 0; background: transparent; color: rgba(255,255,255,.4);
+	cursor: pointer; padding: .3rem; z-index: 2;
+	transition: color .25s ease, transform .25s ease;
+}
+.dp-enq__close:hover { color: #fff; transform: rotate(90deg); }
+
+.dp-enq__title {
+	font-family: 'Cinzel Decorative', serif;
+	font-size: clamp(1.3rem,3.5vw,1.8rem); font-weight: 400;
+	line-height: 1.15; letter-spacing: .02em;
+	color: #fff; margin: 0 0 .4rem;
+}
+.dp-enq__subtitle {
+	font-family: 'Cormorant Garamond', serif;
+	font-style: italic; font-size: clamp(1rem,2.5vw,1.15rem);
+	color: rgba(255,255,255,.4); margin: 0 0 2rem; line-height: 1.4;
+}
+
+.dp-enq__form {
+	display: flex; flex-direction: column; gap: 1.2rem;
+}
+.dp-enq__field {
+	position: relative;
+}
+.dp-enq__field input,
+.dp-enq__field textarea,
+.dp-enq__field select {
+	width: 100%; display: block;
+	font-family: 'Cormorant Garamond', serif; font-size: .95rem;
+	color: #fff; background: transparent;
+	border: 0; border-bottom: 1px solid rgba(255,255,255,.12);
+	padding: .7rem 0 .45rem; outline: none;
+	transition: border-color .3s ease;
+	-webkit-appearance: none; appearance: none;
+	border-radius: 0;
+}
+.dp-enq__field select {
+	background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23C8A96E' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 0 center;
+	padding-right: 1.2rem;
+}
+.dp-enq__field select option {
+	background: #0e0e0e; color: #fff;
+}
+.dp-enq__field textarea { resize: vertical; min-height: 3rem; }
+.dp-enq__field input:focus,
+.dp-enq__field textarea:focus,
+.dp-enq__field select:focus { border-color: rgba(200,169,110,.5); }
+.dp-enq__field input[type="date"] { color: #fff; }
+.dp-enq__field input[type="date"]::-webkit-calendar-picker-indicator {
+	filter: invert(0.7) sepia(1) saturate(0.5) hue-rotate(10deg);
+	cursor: pointer;
+}
+.dp-enq__field label {
+	position: absolute; left: 0; top: .7rem;
+	font-family: 'IBM Plex Mono', monospace; font-size: .5rem;
+	letter-spacing: .12em; text-transform: uppercase;
+	color: rgba(200,169,110,.6);
+	pointer-events: none;
+	transition: transform .25s ease, font-size .25s ease, color .25s ease;
+}
+.dp-enq__field input:focus + label,
+.dp-enq__field input:not(:placeholder-shown) + label,
+.dp-enq__field textarea:focus + label,
+.dp-enq__field textarea:not(:placeholder-shown) + label {
+	transform: translateY(-.95rem); font-size: .42rem; color: rgba(200,169,110,.6);
+}
+.dp-enq__field--select label,
+.dp-enq__field input[type="date"] + label {
+	transform: translateY(-.95rem); font-size: .42rem;
+}
+
+.dp-enq__submit {
+	display: inline-flex; align-items: center; gap: .5rem;
+	align-self: flex-start;
+	font-family: 'IBM Plex Mono', monospace; font-size: .55rem;
+	letter-spacing: .16em; text-transform: uppercase;
+	color: #111; font-weight: 600;
+	background: rgba(200,169,110,.88); border: 0;
+	padding: .75rem 1.8rem; border-radius: 2px;
+	cursor: pointer; margin-top: .6rem;
+	transition: background .3s ease, box-shadow .3s ease, transform .2s ease;
+}
+.dp-enq__submit:hover {
+	background: rgba(200,169,110,1);
+	box-shadow: 0 4px 20px rgba(200,169,110,.35);
+}
+.dp-enq__submit:active { transform: scale(.97); }
+
+.dp-enq__thanks { text-align: center; padding: 3rem 0; }
+
+@media (max-width: 768px) {
+	.dp-enq__panel {
+		max-width: none; margin: 0 .75rem;
+		border-radius: 4px;
+		max-height: 90vh; overflow-y: auto;
+	}
+}
+
